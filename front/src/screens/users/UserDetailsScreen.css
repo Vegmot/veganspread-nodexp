@@ -1,0 +1,27 @@
+/* Global */
+/* Media queries for mobile devices */
+@media (max-width: 400px) {
+}
+
+#user-details-screen {
+  padding-top: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+
+/* Media queries for devices larger than mobile phones */
+@media (min-width: 300px) {
+  #user-details-screen {
+    padding-left: 20vw;
+    padding-right: 20vw;
+  }
+}

@@ -1,0 +1,12 @@
+/* global */
+.ui.inverted.top.fixed.menu {
+  z-index: 100;
+}
+
+/* mobile view */
+@media (max-width: 400px) {
+}
+
+/* desktop view */
+@media (min-width: 401px) {
+}

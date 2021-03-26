@@ -1,0 +1,27 @@
+/* Global */
+.newsitem-link,
+.newsitem-link:hover {
+  color: #000;
+}
+
+.news-item-image {
+  margin: 2% auto;
+}
+
+.news-item-source,
+.news-item-timestamp {
+  text-align: right;
+}
+
+/* Mobile view */
+@media (max-width: 400px) {
+}
+
+/* Desktop view */
+@media (min-width: 401px) {
+  #each-news-item {
+    border: 1px solid #ccc;
+    padding: 2%;
+    margin: 2% auto;
+  }
+}

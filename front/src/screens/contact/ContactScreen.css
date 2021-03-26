@@ -1,0 +1,27 @@
+/* Global */
+/* Media queries for mobile devices */
+@media (max-width: 400px) {
+}
+
+#contact-screen {
+  padding-top: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+/* ****************** */
+
+/* Media queries for devices larger than mobile phones */
+@media (min-width: 300px) {
+  #contact-screen {
+    padding-left: 20vw;
+    padding-right: 20vw;
+  }
+}
