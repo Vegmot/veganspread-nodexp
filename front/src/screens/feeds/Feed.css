@@ -5,6 +5,10 @@
   text-decoration: none;
 }
 
+.feed-details-icon {
+  color: #1b1c1d;
+}
+
 /* Media queries for mobile device view */
 @media (max-width: 400px) {
   #feed.feed {

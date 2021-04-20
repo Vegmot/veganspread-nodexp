@@ -1,13 +1,13 @@
 /* Global */
-/* Media queries for mobile devices */
-@media (max-width: 400px) {
-}
-
 #about-screen {
   padding-top: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Media queries for mobile devices */
+@media (max-width: 400px) {
 }
 
 /* ****************** */

@@ -20,14 +20,16 @@ const EachComment = ({ comment }) => {
               ? comment.text + ' '
               : comment.text.substring(0, displayTextLength) + '... '
             : comment.text + ' '}
-          <button
-            className='show-remaining-comment-text'
-            onClick={() => setShowMore(!showMore)}
-          >
-            <small style={{ color: '#aaa' }}>
-              {showMore ? 'Show less' : 'Show more'}
-            </small>
-          </button>
+          {comment.text && comment.text.length > displayTextLength && (
+            <button
+              className='show-remaining-comment-text'
+              onClick={() => setShowMore(!showMore)}
+            >
+              <small style={{ color: '#aaa' }}>
+                {showMore ? 'Show less' : 'Show more'}
+              </small>
+            </button>
+          )}
         </p>
         <div className='comment-timestamp'>
           <small style={{ color: '#aaa' }}>

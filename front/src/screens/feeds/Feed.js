@@ -77,12 +77,16 @@ const Feed = ({ feed }) => {
                   onClick={heartFillHandler}
                   size='large'
                 />
-                <Icon
-                  link
-                  className='feed-details-icon'
-                  name='comment outline'
-                  size='large'
-                />
+
+                <Link to={`/feed/${feed.feedID}`}>
+                  <Icon
+                    link
+                    className='feed-details-icon'
+                    name='comment outline'
+                    size='large'
+                  />
+                </Link>
+
                 <Icon
                   link
                   className='feed-details-icon'

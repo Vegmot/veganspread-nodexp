@@ -8,8 +8,8 @@
     "node": "14.x"
   },
   "scripts": {
-    "start": "node back/server",
-    "server": "nodemon back/server",
+    "start": "node server",
+    "server": "nodemon server",
     "client": "npm start --prefix front",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix front && npm run build --prefix front"
