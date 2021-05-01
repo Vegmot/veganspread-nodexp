@@ -19,7 +19,7 @@ const App = () => {
       <Navbar />
       <Switch>
         <Route exact path='/admin/users' component={AdminUsersListScreen} />
-        <Route exact path='/admin/feeds' component={AdminFeedsListScreen} />
+        <Route exact path='/admin/feed' component={AdminFeedsListScreen} />
         <Route
           exact
           path='/admin/comments'

@@ -33,7 +33,7 @@ const Navbar = () => {
 
           <Menu.Item as={NavLink} to='/admin/users' name='Users List' />
 
-          <Menu.Item as={NavLink} to='/admin/feeds' name='Feeds List' />
+          <Menu.Item as={NavLink} to='/admin/feed' name='Posts List' />
 
           <Menu.Item as={NavLink} to='/admin/comments' name='Comments List' />
 

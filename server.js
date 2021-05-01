@@ -1,8 +1,8 @@
 import express from 'express'
 import connectDB from './config/db.js'
 import userRoutes from './routes/userRoutes.js'
-import feedRoutes from './routes/feedRoutes.js'
-import profileRoutes from './routes/profileRoutes.js'
+import postRoutes from './routes/postRoutes.js'
+import commentRoutes from './routes/commentRoutes.js'
 
 const app = express()
 
@@ -14,8 +14,8 @@ app.use(express.json())
 
 // define routes
 app.use('/api/users', userRoutes)
-app.use('/api/feeds', feedRoutes)
-app.use('/api/profiles', profileRoutes)
+app.use('/api/posts', postRoutes)
+app.use('/api/comments', commentRoutes)
 
 // Listen to port
 const PORT = process.env.PORT || 5000

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const feedSchema = mongoose.Schema(
+const postSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -30,11 +30,11 @@ const feedSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    isUpdated: {
+    isEdited: {
       type: Boolean,
       default: false,
     },
-    updatedAt: {
+    editedAt: {
       type: Date,
       default: Date.now,
     },
@@ -42,6 +42,6 @@ const feedSchema = mongoose.Schema(
   { timestamps: true }
 )
 
-const Feed = mongoose.model('Feed', feedSchema)
+const Post = mongoose.model('Post', postSchema)
 
-export default Feed
+export default Post

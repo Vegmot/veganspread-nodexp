@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Feed from './Feed'
 import { feedData } from '../../data/feedData'
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Dropdown } from 'semantic-ui-react'
 
 import './FeedsScreen.css'
 import FeedCompact from './FeedCompact'
@@ -48,6 +48,14 @@ const FeedsScreen = () => {
                 size='large'
                 onClick={listViewHandler}
               />
+
+              <Dropdown icon='filter large'>
+                <Dropdown.Menu>
+                  <Dropdown.Item icon='globe' text='All posts' />
+                  <Dropdown.Item icon='write' text='My posts' />
+                  <Dropdown.Item icon='bookmark' text='Saved posts' />
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
             {feedData

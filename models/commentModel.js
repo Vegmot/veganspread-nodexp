@@ -25,6 +25,14 @@ const commentSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isEdited: {
+    type: Boolean,
+    default: false,
+  },
+  editedAt: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
 const Comment = mongoose.model('Comment', commentSchema)
