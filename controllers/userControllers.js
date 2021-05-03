@@ -68,11 +68,31 @@ const registerUser = asyncHandler(async (req, res) => {
   })
 })
 
+// get logged in user
+// GET /api/users
+// private
+const getLoggedInUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+
+  if (!user) return fin(res, 404, 'User not found')
+
+  return res.status(200).json({
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    displayName: user.displayName,
+    email: user.email,
+    avatar: user.avatar,
+    isAdmin: user.isAdmin,
+    isPremium: user.isPremium,
+  })
+})
+
 // get a user by its id
 // GET /api/users/:uid
 // private
-const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.uid)
 
   if (!user) return fin(res, 404, 'User not found')
 
@@ -92,7 +112,7 @@ const getUser = asyncHandler(async (req, res) => {
 // DELETE /api/users/:uid
 // private
 const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+  const user = await User.findById(req.params.uid)
 
   if (!user) return fin(res, 404, 'User not found')
 
@@ -100,4 +120,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   return fin(res, 200, 'Successfully deleted the user')
 })
 
-export { authUser, registerUser, getUser, deleteUser }
+export { authUser, registerUser, getLoggedInUser, getUserById, deleteUser }

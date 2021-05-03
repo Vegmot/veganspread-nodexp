@@ -1,17 +1,22 @@
 import express from 'express'
 import {
   writePost,
-  getPost,
+  getPostById,
+  getAllPublicPosts,
   updatePost,
   deletePost,
+  getMyPosts,
 } from '../controllers/postControllers.js'
 import { protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').post(protect, writePost)
+router.route('/').get(getAllPublicPosts).post(protect, writePost)
+router.route('/:uid').get(protect, getMyPosts)
 router
   .route('/:pid')
-  .get(getPost)
-  .put(protect, updatePost)
+  .get(getPostById)
+  .patch(protect, updatePost)
   .delete(protect, deletePost)
+
+export default router

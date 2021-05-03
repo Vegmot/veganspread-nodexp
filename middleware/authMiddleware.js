@@ -24,6 +24,10 @@ const protect = asyncHandler(async (req, res, next) => {
       res.status(401)
       throw new Error('Invalid token; authorisation failed')
     }
+  } else {
+    return res
+      .status(400)
+      .json({ message: "Something's wrong with the token passed in" })
   }
 })
 

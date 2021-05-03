@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const commentSchema = mongoose.Schema({
-  feed: {
+  post: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Feed',
+    ref: 'Post',
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +31,6 @@ const commentSchema = mongoose.Schema({
   },
   editedAt: {
     type: Date,
-    default: Date.now,
   },
 })
 
