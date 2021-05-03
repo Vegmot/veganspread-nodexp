@@ -2,7 +2,6 @@ import express from 'express'
 import connectDB from './config/db.js'
 import userRoutes from './routes/userRoutes.js'
 import postRoutes from './routes/postRoutes.js'
-import commentRoutes from './routes/commentRoutes.js'
 
 const app = express()
 

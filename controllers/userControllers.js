@@ -6,28 +6,33 @@ const fin = (res, status, message) => {
   return res.status(status).json({ message: message })
 }
 
+// authenticate (login) user
+// POST /api/users/login
+// public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
 
-  if (user && (await user.matchPassword(password))) {
-    return res.json({
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      displayName: user.displayName,
-      avatar: user.avatar,
-      email: user.email,
-      isPremium: user.isPremium,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  } else {
+  if (!user || !(await user.matchPassword(password)))
     return fin(res, 401, 'Invalid email or password')
-  }
+
+  return res.json({
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    displayName: user.displayName,
+    avatar: user.avatar,
+    email: user.email,
+    isPremium: user.isPremium,
+    isAdmin: user.isAdmin,
+    token: generateToken(user._id),
+  })
 })
 
+// register user
+// POST /api/users/register
+// public
 const registerUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body
   const imageNumber = Number(await User.countDocuments({})) + 1
@@ -49,20 +54,50 @@ const registerUser = asyncHandler(async (req, res) => {
     avatar,
   })
 
-  if (user) {
-    return res.status(201).json({
-      _id: use._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      displayName: user.displayName,
-      email: user.email,
-      avatar: user.avatar,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  } else {
-    return fin(res, 400, 'Invalid user data')
-  }
+  if (!user) return fin(res, 400, 'Invalid user data')
+
+  return res.status(201).json({
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    displayName: user.displayName,
+    email: user.email,
+    avatar: user.avatar,
+    isAdmin: user.isAdmin,
+    token: generateToken(user._id),
+  })
 })
 
-export { authUser, registerUser }
+// get a user by its id
+// GET /api/users/:uid
+// private
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+
+  if (!user) return fin(res, 404, 'User not found')
+
+  return res.status(200).json({
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    displayName: user.displayName,
+    email: user.email,
+    avatar: user.avatar,
+    isAdmin: user.isAdmin,
+    isPremium: user.isPremium,
+  })
+})
+
+// delete user
+// DELETE /api/users/:uid
+// private
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (!user) return fin(res, 404, 'User not found')
+
+  await user.remove()
+  return fin(res, 200, 'Successfully deleted the user')
+})
+
+export { authUser, registerUser, getUser, deleteUser }

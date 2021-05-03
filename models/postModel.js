@@ -36,7 +36,6 @@ const postSchema = mongoose.Schema(
     },
     editedAt: {
       type: Date,
-      default: Date.now,
     },
   },
   { timestamps: true }
