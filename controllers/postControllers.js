@@ -85,9 +85,11 @@ const deletePost = asyncHandler(async (req, res) => {
 // public
 const getAllPublicPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ isPrivate: false })
+    .sort({ createdAt: -1 })
+    .limit(10)
   if (!posts) return fin(res, 404, 'Posts not found')
 
-  return res.status(200).json(posts.sort((a, b) => b.createdAt - a.createdAt)) // the latest post goes on top
+  return res.status(200).json(posts) // the latest post goes on top
 })
 
 // get logged in user's posts
@@ -95,9 +97,11 @@ const getAllPublicPosts = asyncHandler(async (req, res) => {
 // private
 const getMyPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user: req.user._id })
+    .sort({ createdAt: -1 })
+    .limit(10)
   if (!posts) return fin(res, 404, 'Posts not found')
 
-  return res.status(200).json(posts.sort((a, b) => b.createdAt - a.createdAt))
+  return res.status(200).json(posts)
 })
 
 export {

@@ -1,16 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Feed from './Feed'
 import { feedData } from '../../data/feedData'
 import { Button, Icon, Dropdown } from 'semantic-ui-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchPublicPosts, fetchPrivatePosts } from '../../actions/postActions'
 
 import './FeedsScreen.css'
 import FeedCompact from './FeedCompact'
 
 const FeedsScreen = () => {
+  const dispatch = useDispatch()
+
   const [cardActiveColour, setCardActiveColour] = useState('teal')
   const [listActiveColour, setListActiveColour] = useState('black')
 
-  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    dispatch(fetchPublicPosts())
+  }, [dispatch])
+
+  const getPublicPosts = useSelector(state => state.getPublicPosts)
+  const {
+    loading: loadingPublic,
+    success: successPublic,
+    posts,
+  } = getPublicPosts
+
+  const getPrivatePosts = useSelector(state => state.getPrivatePosts)
+  const {
+    loading: loadingPrivate,
+    success: successPrivate,
+    posts: privatePosts,
+  } = getPrivatePosts
 
   const cardViewHandler = () => {
     if (cardActiveColour === 'black') {
@@ -28,6 +48,14 @@ const FeedsScreen = () => {
     } else {
       return
     }
+  }
+
+  const displayPublicPosts = () => {
+    dispatch(getPublicPosts())
+  }
+
+  const displatPrivatePosts = userID => {
+    dispatch(getPrivatePosts(userID))
   }
 
   return (
@@ -58,14 +86,13 @@ const FeedsScreen = () => {
               </Dropdown>
             </div>
 
-            {feedData
+            {posts
               .sort((a, b) => {
                 return b.createdAt - a.createdAt
               })
-              .map(
-                feed =>
-                  !feed.isPrivate && <Feed feed={feed} key={feed.feedID} />
-              )}
+              .map(post => (
+                <Feed post={post} key={post._id} />
+              ))}
           </section>
 
           <div className='load-more-button'>
@@ -88,18 +115,23 @@ const FeedsScreen = () => {
                 size='large'
                 onClick={listViewHandler}
               />
+
+              <Dropdown icon='filter large'>
+                <Dropdown.Menu>
+                  <Dropdown.Item icon='globe' text='All posts' />
+                  <Dropdown.Item icon='write' text='My posts' />
+                  <Dropdown.Item icon='bookmark' text='Saved posts' />
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
-            {feedData
+            {posts
               .sort((a, b) => {
                 return b.createdAt - a.createdAt
               })
-              .map(
-                feed =>
-                  !feed.isPrivate && (
-                    <FeedCompact feed={feed} key={feed.feedID} />
-                  )
-              )}
+              .map(post => (
+                <FeedCompact post={post} key={post._id} />
+              ))}
           </section>
 
           <div className='load-more-button'>

@@ -4,29 +4,31 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import MyTextInput from '../../components/form/MyTextInput'
 import { Button, Divider, Label } from 'semantic-ui-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../components/modals/modalReducer'
-import { signInWithEmail } from '../../config/firebaseService'
 import SocialLogin from './SocialLogin'
+import { loginUser } from '../../actions/userActions'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
+  const loginUser = useSelector(state => state.loginUser)
+  const { userData } = loginUser
 
   return (
     <ModalWrapper size='mini' header='Sign in'>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={Yup.object({
-          email: Yup.string().required().email(),
-          password: Yup.string().required(),
+          email: Yup.string().email().required('Required field'),
+          password: Yup.string().required('Required field'),
         })}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
-            await signInWithEmail(values)
+            await loginUser(values)
             setSubmitting(false)
             dispatch(closeModal())
           } catch (error) {
-            setErrors({ auth: error.message })
+            setErrors({ errors: error.message })
             setSubmitting(false)
           }
         }}

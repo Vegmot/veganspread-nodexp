@@ -31,12 +31,6 @@ const Navbar = () => {
 
           <Menu.Item as={NavLink} to='/contact' name='Contact' />
 
-          <Menu.Item as={NavLink} to='/admin/users' name='Users List' />
-
-          <Menu.Item as={NavLink} to='/admin/feed' name='Posts List' />
-
-          <Menu.Item as={NavLink} to='/admin/comments' name='Comments List' />
-
           <SignedOutMenu />
         </Container>
       </Menu>

@@ -18,13 +18,6 @@ const App = () => {
       <ModalManager />
       <Navbar />
       <Switch>
-        <Route exact path='/admin/users' component={AdminUsersListScreen} />
-        <Route exact path='/admin/feed' component={AdminFeedsListScreen} />
-        <Route
-          exact
-          path='/admin/comments'
-          component={AdminCommentsListScreen}
-        />
         <Route exact path='/user/:id' component={UserDetailsScreen} />
         <Route exact path='/news' component={NewsScreen} />
         <Route exact path='/about' component={AboutScreen} />

@@ -5,7 +5,7 @@ import { displayTimestamp } from '../../utils/displayTimestamp'
 
 import './Feed.css'
 
-const Feed = ({ feed }) => {
+const Feed = ({ post }) => {
   const [heartName, setHeartName] = useState('heart outline')
   const [heartColour, setHeartColour] = useState('black')
   const [bookmarkName, setBookmarkName] = useState('bookmark outline')
@@ -39,11 +39,11 @@ const Feed = ({ feed }) => {
             <p className='feed-header-poster'>
               <span className='feed-header-poster-name'>
                 <strong>
-                  {feed.isAd ? (
+                  {post.isAd ? (
                     <span style={{ color: '#01b5ac' }}>Advertisement</span>
                   ) : (
-                    <Link to={`/user/${feed.userID}`} className='user-details'>
-                      {feed.userID}
+                    <Link to={`/user/${post.user}`} className='user-details'>
+                      {post.displayName}
                     </Link>
                   )}
                 </strong>
@@ -52,13 +52,13 @@ const Feed = ({ feed }) => {
           </div>
 
           <div className='feed-content-image'>
-            <Link to={`/feed/${feed.feedID}`}>
-              <Image src={feed.image || ''} fluid centered alt='Sample image' />
+            <Link to={`/feed/${post._id}`}>
+              <Image src={post.image} fluid centered alt='Sample image' />
             </Link>
           </div>
 
           <div className='feed-details'>
-            {feed.isAd ? (
+            {post.isAd ? (
               <>
                 <Icon
                   link
@@ -78,7 +78,7 @@ const Feed = ({ feed }) => {
                   size='large'
                 />
 
-                <Link to={`/feed/${feed.feedID}`}>
+                <Link to={`/feed/${post._id}`}>
                   <Icon
                     link
                     className='feed-details-icon'
@@ -109,21 +109,21 @@ const Feed = ({ feed }) => {
           <div className='feed-content-text'>
             <p>
               <span className='feed-content-text-user'>
-                {feed.isAd ? (
+                {post.isAd ? (
                   <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
                 ) : (
-                  <strong>{feed.userID}</strong>
+                  <strong>{post.user}</strong>
                 )}
               </span>{' '}
-              {feed.text && feed.text.length > 200
-                ? feed.text.substring(0, 200)
-                : feed.text}
+              {post.text && post.text.length > 200
+                ? post.text.substring(0, 200)
+                : post.text}
             </p>
           </div>
 
           <div className='feed-footer'>
             <small className='feed-footer-timestamp'>
-              {feed.isAd ? '' : displayTimestamp(Date.now(), feed.createdAt)}
+              {post.isAd ? '' : displayTimestamp(Date.now(), post.createdAt)}
             </small>
           </div>
         </div>

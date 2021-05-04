@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
+import { displayTimestamp } from '../../utils/displayTimestamp'
 
 import './FeedCompact.css'
 
-const FeedCompact = ({ feed }) => {
+const FeedCompact = ({ post }) => {
   const [heartName, setHeartName] = useState('heart outline')
   const [heartColour, setHeartColour] = useState('black')
   const [bookmarkName, setBookmarkName] = useState('bookmark outline')
@@ -30,51 +31,16 @@ const FeedCompact = ({ feed }) => {
     }
   }
 
-  const displayTimestamp = (timeNow, timePosted) => {
-    // timePosted CANNOT be larger than timeNow
-
-    // year
-    const timePassedInSeconds = (timeNow - timePosted) / 1000
-    if (timePassedInSeconds > 31536000) {
-      return `${Math.floor(timePassedInSeconds / 31536000)}y ago`
-    }
-
-    // month
-    if (timePassedInSeconds > 2415600 && timePassedInSeconds < 31536000) {
-      return `${Math.floor(timePassedInSeconds / 2415600)}mth ago`
-    }
-
-    // day
-    if (timePassedInSeconds > 86400 && timePassedInSeconds < 2415600) {
-      return `${Math.floor(timePassedInSeconds / 86400)}d ago`
-    }
-
-    // hour
-    if (timePassedInSeconds > 3600 && timePassedInSeconds < 86400) {
-      return `${Math.floor(timePassedInSeconds / 3600)}h ago`
-    }
-
-    // minute
-    if (timePassedInSeconds > 60 && timePassedInSeconds < 36400) {
-      return `${Math.floor(timePassedInSeconds / 60)}min ago`
-    }
-
-    // second
-    if (timePassedInSeconds < 60) {
-      return 'Just now'
-    }
-  }
-
   return (
     <>
       <section id='feed-compact-screen' className='feed-compact-screen'>
         <div id='feed-compact' className='feed-compact'>
           <div className='feed-compact-container'>
             <div className='feed-compact-image'>
-              <Link to={`/feed/${feed.feedID}`}>
+              <Link to={`/feed?/${post._id}`}>
                 <Image
-                  src={feed.image}
-                  alt={`Image uploaded by ${feed.userID}`}
+                  src={post.image}
+                  alt={`Image uploaded by ${post.displayName}`}
                   fluid
                 />
               </Link>
@@ -83,7 +49,7 @@ const FeedCompact = ({ feed }) => {
             <div className='feed-compact-content'>
               <div className='feed-compact-poster'>
                 <strong>
-                  {feed.isAd ? (
+                  {post.isAd ? (
                     <span style={{ color: '#01b5ac' }}>Advertisement</span>
                   ) : (
                     ''
@@ -94,24 +60,24 @@ const FeedCompact = ({ feed }) => {
               <div className='feed-compact-text'>
                 <p>
                   <span className='feed-content-text-user'>
-                    {feed.isAd ? (
+                    {post.isAd ? (
                       <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
                     ) : (
-                      <strong>{feed.userID}</strong>
+                      <strong>{post.displayName}</strong>
                     )}
                   </span>{' '}
-                  {feed.text && feed.text.length > 100
-                    ? feed.text.substring(0, 100) + '...'
-                    : feed.text}
+                  {post.text && post.text.length > 100
+                    ? post.text.substring(0, 100) + '...'
+                    : post.text}
                 </p>
               </div>
 
               <div className='feed-compact-footer'>
-                <small>{displayTimestamp(Date.now(), feed.createdAt)}</small>
+                <small>{displayTimestamp(Date.now(), post.createdAt)}</small>
               </div>
 
               <div className='feed-compact-details'>
-                {feed.isAd ? (
+                {post.isAd ? (
                   <>
                     <Icon
                       link
