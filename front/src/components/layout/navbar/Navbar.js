@@ -1,12 +1,17 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Container, Image, Menu } from 'semantic-ui-react'
+import { useDispatch, useSelector } from 'react-redux'
 import SignedInMenu from '../navbar/SignedInMenu'
 import SignedOutMenu from '../navbar/SignedOutMenu'
 
 import './Navbar.css'
 
 const Navbar = () => {
+  const dispatch = useDispatch()
+  const loginUser = useSelector(state => state.loginUser)
+  const { userData } = loginUser
+
   return (
     <>
       <Menu inverted fixed='top' id='header-navbar' className='header-navbar'>
@@ -31,7 +36,7 @@ const Navbar = () => {
 
           <Menu.Item as={NavLink} to='/contact' name='Contact' />
 
-          <SignedOutMenu />
+          {userData ? <SignedInMenu /> : <SignedOutMenu />}
         </Container>
       </Menu>
     </>

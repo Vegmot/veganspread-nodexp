@@ -1,6 +1,12 @@
 /* Global */
+.split-line {
+  border-bottom: 1px dotted #aaa;
+  margin: 2% auto;
+  width: 90%;
+}
+
 /* Media queries for mobile devices */
-@media (max-width: 401px) {
+@media (max-width: 500px) {
   div.feed-compact {
     padding: 0;
     margin: 0;
@@ -61,7 +67,7 @@
 /* ****************** */
 
 /* Media queries for devices larger than mobile phones */
-@media (min-width: 400px) {
+@media (min-width: 501px) {
   .feed-compact-screen .feed-compact {
     border: 1px solid #eee;
     border-radius: 10px;

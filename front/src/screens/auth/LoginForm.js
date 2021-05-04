@@ -7,12 +7,10 @@ import { Button, Divider, Label } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../components/modals/modalReducer'
 import SocialLogin from './SocialLogin'
-import { loginUser } from '../../actions/userActions'
+import { login } from '../../actions/userActions'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const loginUser = useSelector(state => state.loginUser)
-  const { userData } = loginUser
 
   return (
     <ModalWrapper size='mini' header='Sign in'>
@@ -22,9 +20,9 @@ const LoginForm = () => {
           email: Yup.string().email().required('Required field'),
           password: Yup.string().required('Required field'),
         })}
-        onSubmit={async (values, { setSubmitting, setErrors }) => {
+        onSubmit={(values, { setSubmitting, setErrors }) => {
           try {
-            await loginUser(values)
+            dispatch(login(values.email, values.password))
             setSubmitting(false)
             dispatch(closeModal())
           } catch (error) {

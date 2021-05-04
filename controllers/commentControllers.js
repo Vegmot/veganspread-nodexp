@@ -3,7 +3,7 @@ import User from '../models/userModel.js'
 import Comment from '../models/commentModel.js'
 import asyncHandler from 'express-async-handler'
 
-const fin = (res, status, message) => {
+const done = (res, status, message) => {
   return res.status(status).json({ message: message })
 }
 
@@ -12,9 +12,9 @@ const fin = (res, status, message) => {
 // private
 const writeComment = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
+  if (!user) return done(res, 404, 'User not found')
   const post = await Post.findById(req.params.pid)
-  if (!user) return fin(res, 404, 'User not found')
-  if (!post) return fin(res, 404, 'Post not found')
+  if (!post) return done(res, 404, 'Post not found')
 
   const comment = new Comment({
     displayName: user.displayName,
@@ -36,7 +36,7 @@ const getComment = asyncHandler(async (req, res) => {
   const comment = commentsOnAPost.filter(
     cmnt => cmnt._id.toString() === req.params.cid
   )
-  if (!comment) return fin(res, 404, 'Comment not found')
+  if (!comment) return done(res, 404, 'Comment not found')
 
   return res.status(200).json(comment)
 })
@@ -45,8 +45,8 @@ const getComment = asyncHandler(async (req, res) => {
 // GET /api/comments/:uid
 // private
 const getAllMyComments = asyncHandler(async (req, res) => {
-  const comments = await Comment.find({ user: req.params.uid })
-  if (!comments) return fin(res, 404, 'Comment not found')
+  const comments = await Comment.find({ user: req.user._id.toString() })
+  if (!comments) return done(res, 404, 'Comment not found')
 
   return res.status(200).json(comments)
 })
@@ -59,9 +59,9 @@ const updateComment = asyncHandler(async (req, res) => {
     post: req.params.pid,
     _id: req.params.cid,
   })
-  if (!comment) return fin(res, 404, 'Comment not found')
+  if (!comment) return done(res, 404, 'Comment not found')
   if (comment.user.toString() !== req.user._id.toString())
-    return fin(res, 403, 'You have no access to this comment')
+    return done(res, 403, 'You have no access to this comment')
 
   await Comment.findOneAndUpdate(
     {
@@ -71,6 +71,7 @@ const updateComment = asyncHandler(async (req, res) => {
     {
       $set: {
         text: req.body.text,
+        editedAt: Date.now(),
       },
     },
     { new: true }
@@ -88,12 +89,12 @@ const deleteComment = asyncHandler(async (req, res) => {
     post: req.params.pid,
     _id: req.params.cid,
   })
-  if (!comment) return fin(res, 404, 'Comment not found')
+  if (!comment) return done(res, 404, 'Comment not found')
   if (comment.user.toString() !== req.user._id.toString())
-    return fin(res, 403, 'You have no access to this comment')
+    return done(res, 403, 'You have no access to this comment')
 
   await comment.remove()
-  return fin(res, 200, 'Successfully removed the comment')
+  return done(res, 200, 'Successfully removed the comment')
 })
 
 export {

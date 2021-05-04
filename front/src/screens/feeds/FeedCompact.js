@@ -76,6 +76,8 @@ const FeedCompact = ({ post }) => {
                 <small>{displayTimestamp(Date.now(), post.createdAt)}</small>
               </div>
 
+              <div className='split-line'></div>
+
               <div className='feed-compact-details'>
                 {post.isAd ? (
                   <>

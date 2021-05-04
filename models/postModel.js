@@ -11,7 +11,7 @@ const postSchema = mongoose.Schema(
     lastName: { type: String },
     avatar: { type: String },
     createdAt: {
-      type: Date,
+      type: Number,
       default: Date.now,
     },
     image: {
@@ -35,7 +35,7 @@ const postSchema = mongoose.Schema(
       default: false,
     },
     editedAt: {
-      type: Date,
+      type: Number,
     },
   },
   { timestamps: true }

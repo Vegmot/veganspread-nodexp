@@ -1,11 +1,11 @@
 import React from 'react'
 import { Form, Formik } from 'formik'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import MyTextInput from '../../components/form/MyTextInput'
 import ModalWrapper from '../../components/modals/ModalWrapper'
 import { closeModal } from '../../components/modals/modalReducer'
-import { registerInFirebase } from '../../config/firebaseService'
+import { registerUser } from '../../actions/userActions'
 import SocialLogin from '../auth/SocialLogin'
 import { Button, Divider } from 'semantic-ui-react'
 
@@ -19,20 +19,30 @@ const RegisterForm = () => {
           initialValues={{
             firstName: '',
             lastName: '',
+            displayName: '',
             email: '',
             password: '',
           }}
           validationSchema={Yup.object({
             firstName: Yup.string().required('Please enter your first name'),
             lastName: Yup.string().required('Please enter your last name'),
+            displayName: Yup.string().required(
+              'Please enter your preferred username'
+            ),
             email: Yup.string()
               .required('Please enter valid email address')
               .email(),
             password: Yup.string().required('Password is required'),
           })}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={(values, { setSubmitting }) => {
             try {
-              await registerInFirebase(values)
+              registerUser(
+                values.firstName,
+                values.lastName,
+                values.displayName,
+                values.email,
+                values.password
+              )
               setSubmitting(false)
               dispatch(closeModal())
             } catch (error) {
@@ -45,6 +55,7 @@ const RegisterForm = () => {
             <Form className='ui form'>
               <MyTextInput name='firstName' placeholder='First name' />
               <MyTextInput name='lastName' placeholder='Last name' />
+              <MyTextInput name='displayName' placeholder='Username' />
               <MyTextInput
                 name='email'
                 placeholder='Email address'

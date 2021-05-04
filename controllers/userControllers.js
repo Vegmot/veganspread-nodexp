@@ -1,8 +1,10 @@
 import User from '../models/userModel.js'
+import Post from '../models/postModel.js'
+import Comment from '../models/commentModel.js'
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 
-const fin = (res, status, message) => {
+const done = (res, status, message) => {
   return res.status(status).json({ message: message })
 }
 
@@ -15,7 +17,7 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email })
 
   if (!user || !(await user.matchPassword(password)))
-    return fin(res, 401, 'Invalid email or password')
+    return done(res, 401, 'Invalid email or password')
 
   return res.json({
     _id: user._id,
@@ -40,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const userExists = await User.findOne({ email })
 
-  if (userExists) return fin(res, 400, 'User already exists')
+  if (userExists) return done(res, 400, 'User already exists')
 
   const user = await User.create({
     firstName:
@@ -54,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
     avatar,
   })
 
-  if (!user) return fin(res, 400, 'Invalid user data')
+  if (!user) return done(res, 400, 'Invalid user data')
 
   return res.status(201).json({
     _id: user._id,
@@ -74,7 +76,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const getLoggedInUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
-  if (!user) return fin(res, 404, 'User not found')
+  if (!user) return done(res, 404, 'User not found')
 
   return res.status(200).json({
     _id: user._id,
@@ -94,7 +96,7 @@ const getLoggedInUser = asyncHandler(async (req, res) => {
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.uid)
 
-  if (!user) return fin(res, 404, 'User not found')
+  if (!user) return done(res, 404, 'User not found')
 
   return res.status(200).json({
     _id: user._id,
@@ -114,10 +116,15 @@ const getUserById = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.uid)
 
-  if (!user) return fin(res, 404, 'User not found')
+  if (!user) return done(res, 404, 'User not found')
+  if (req.user._id.toString() !== req.params.uid)
+    return done(res, 403, 'You can delete yourself only, and not other users')
+
+  await Comment.deleteMany({ user: req.params.uid }) // delete all the comments
+  await Post.deleteMany({ user: req.params.uid }) // and posts that were written by this user first
 
   await user.remove()
-  return fin(res, 200, 'Successfully deleted the user')
+  return done(res, 200, 'Successfully deleted the user')
 })
 
 export { authUser, registerUser, getLoggedInUser, getUserById, deleteUser }

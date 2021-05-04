@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { modalReducer } from '../components/modals/modalReducer'
 import {
   getPublicPostsReducer,
-  getPrivatePostsReducer,
+  getMyPostsReducer,
   getPostByIdReducer,
   writePostReducer,
   updatePostReducer,
@@ -15,6 +15,13 @@ import {
   getUserReducer,
   deleteUserReducer,
 } from '../reducers/userReducer'
+import {
+  getCommentsReducer,
+  getCommentByIdReducer,
+  writeCommentReducer,
+  updateCommentReducer,
+  deleteCommentReducer,
+} from '../reducers/commentReducer'
 
 const rootReducer = combineReducers({
   // modal
@@ -29,13 +36,18 @@ const rootReducer = combineReducers({
 
   // posts
   getPublicPosts: getPublicPostsReducer,
-  getPrivatePosts: getPrivatePostsReducer,
+  getMyPosts: getMyPostsReducer,
   getPostById: getPostByIdReducer,
   writePost: writePostReducer,
   updatePost: updatePostReducer,
   deletePost: deletePostReducer,
 
   // comments
+  getComments: getCommentsReducer,
+  getCommentById: getCommentByIdReducer,
+  writeComment: writeCommentReducer,
+  updateComment: updateCommentReducer,
+  deleteComment: deleteCommentReducer,
 })
 
 export default rootReducer

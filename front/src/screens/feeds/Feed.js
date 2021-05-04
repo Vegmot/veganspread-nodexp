@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import { displayTimestamp } from '../../utils/displayTimestamp'
+import { formatDistance } from 'date-fns'
 
 import './Feed.css'
 
@@ -112,7 +113,7 @@ const Feed = ({ post }) => {
                 {post.isAd ? (
                   <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
                 ) : (
-                  <strong>{post.user}</strong>
+                  <strong>{post.displayName}</strong>
                 )}
               </span>{' '}
               {post.text && post.text.length > 200
@@ -123,7 +124,9 @@ const Feed = ({ post }) => {
 
           <div className='feed-footer'>
             <small className='feed-footer-timestamp'>
-              {post.isAd ? '' : displayTimestamp(Date.now(), post.createdAt)}
+              {post.isAd
+                ? ''
+                : formatDistance(Date.now(), post.createdAt) + ' ago'}
             </small>
           </div>
         </div>

@@ -2,9 +2,9 @@ import {
   GET_PUBLIC_POSTS_REQUEST,
   GET_PUBLIC_POSTS_SUCCESS,
   GET_PUBLIC_POSTS_FAIL,
-  GET_PRIVATE_POSTS_REQUEST,
-  GET_PRIVATE_POSTS_SUCCESS,
-  GET_PRIVATE_POSTS_FAIL,
+  GET_MY_POSTS_REQUEST,
+  GET_MY_POSTS_SUCCESS,
+  GET_MY_POSTS_FAIL,
   GET_POST_BY_ID_REQUEST,
   GET_POST_BY_ID_SUCCESS,
   GET_POST_BY_ID_FAIL,
@@ -43,15 +43,15 @@ export const getPublicPostsReducer = (state = initialState, action) => {
   }
 }
 
-export const getPrivatePostsReducer = (state = initialState, action) => {
+export const getMyPostsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_PRIVATE_POSTS_REQUEST:
+    case GET_MY_POSTS_REQUEST:
       return { ...state, loading: true, posts: [] }
 
-    case GET_PRIVATE_POSTS_SUCCESS:
+    case GET_MY_POSTS_SUCCESS:
       return { ...state, loading: false, success: true, posts: action.payload }
 
-    case GET_PRIVATE_POSTS_FAIL:
+    case GET_MY_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload }
 
     default:

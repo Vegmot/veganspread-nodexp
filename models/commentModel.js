@@ -14,23 +14,15 @@ const commentSchema = mongoose.Schema({
   lastName: { type: String },
   avatar: { type: String },
   createdAt: {
-    type: Date,
+    type: Number,
     default: Date.now,
   },
   text: {
     type: String,
     required: true,
   },
-  isPrivate: {
-    type: Boolean,
-    default: false,
-  },
-  isEdited: {
-    type: Boolean,
-    default: false,
-  },
   editedAt: {
-    type: Date,
+    type: Number,
   },
 })
 

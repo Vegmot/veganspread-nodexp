@@ -3,9 +3,9 @@ import {
   GET_PUBLIC_POSTS_REQUEST,
   GET_PUBLIC_POSTS_SUCCESS,
   GET_PUBLIC_POSTS_FAIL,
-  GET_PRIVATE_POSTS_REQUEST,
-  GET_PRIVATE_POSTS_SUCCESS,
-  GET_PRIVATE_POSTS_FAIL,
+  GET_MY_POSTS_REQUEST,
+  GET_MY_POSTS_SUCCESS,
+  GET_MY_POSTS_FAIL,
   GET_POST_BY_ID_REQUEST,
   GET_POST_BY_ID_SUCCESS,
   GET_POST_BY_ID_FAIL,
@@ -41,19 +41,29 @@ export const fetchPublicPosts = () => async dispatch => {
   }
 }
 
-export const fetchPrivatePosts = userID => async dispatch => {
+export const fetchMyPosts = userID => async (dispatch, getState) => {
   try {
-    dispatch({ type: GET_PRIVATE_POSTS_REQUEST })
+    dispatch({ type: GET_MY_POSTS_REQUEST })
 
-    const res = await axios.get(`/api/posts/${userID}`)
+    const {
+      loginUser: { userData },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    }
+
+    const res = await axios.get(`/api/posts/${userID}`, config)
 
     dispatch({
-      type: GET_PRIVATE_POSTS_SUCCESS,
+      type: GET_MY_POSTS_SUCCESS,
       payload: res.data,
     })
   } catch (error) {
     dispatch({
-      type: GET_PRIVATE_POSTS_FAIL,
+      type: GET_MY_POSTS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -83,13 +93,18 @@ export const getPostById = postID => async dispatch => {
   }
 }
 
-export const writePost = (image, text) => async dispatch => {
+export const writePost = (image, text) => async (dispatch, getState) => {
   try {
     dispatch({ type: WRITE_POST_REQUEST })
 
+    const {
+      loginUser: { userData },
+    } = getState()
+
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        Authorization: `Bearer ${userData.token}`,
+        'Content-Type': 'application/json',
       },
     }
 
@@ -110,13 +125,18 @@ export const writePost = (image, text) => async dispatch => {
   }
 }
 
-export const updatePost = post => async dispatch => {
+export const updatePost = post => async (dispatch, getState) => {
   try {
     dispatch({ type: UPDATE_POST_REQUEST })
 
+    const {
+      loginUser: { userData },
+    } = getState()
+
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        Authorization: `Bearer ${userData.token}`,
+        'Content-Type': 'application/json',
       },
     }
 
@@ -137,11 +157,21 @@ export const updatePost = post => async dispatch => {
   }
 }
 
-export const deletePost = postID => async dispatch => {
+export const deletePost = postID => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_POST_REQUEST })
 
-    const res = await axios.delete(`/api/posts/${postID}`)
+    const {
+      loginUser: { userData },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    }
+
+    await axios.delete(`/api/posts/${postID}`, config)
 
     dispatch({
       type: DELETE_POST_SUCCESS,

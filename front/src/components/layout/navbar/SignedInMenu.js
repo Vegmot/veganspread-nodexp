@@ -1,11 +1,17 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Dropdown, Image, Menu } from 'semantic-ui-react'
+import { logout } from '../../../actions/userActions'
 
 const SignedInMenu = () => {
-  const currentUser = null
+  const dispatch = useDispatch()
+  const loginUser = useSelector(state => state.loginUser)
+  const { userData } = loginUser
 
-  const signOutHandler = () => {}
+  const logOutHandler = () => {
+    dispatch(logout())
+  }
 
   return (
     <>
@@ -13,20 +19,13 @@ const SignedInMenu = () => {
         <Image
           avatar
           spaced='right'
-          src={currentUser.photoURL || '/assets/user.png'}
+          src={userData.avatar || '/assets/user.png'}
         />
-        <Dropdown pointing='top left' text={currentUser.displayName}>
+        <Dropdown pointing='top left' text={userData.displayName}>
           <Dropdown.Menu>
             <Dropdown.Item
               as={Link}
-              to='/createEvent'
-              text='Create Event'
-              icon='plus'
-            />
-
-            <Dropdown.Item
-              as={Link}
-              to={`/profile/${currentUser.uid}`}
+              to={`/profile/${userData._id}`}
               text='My profile'
               icon='user'
             />
@@ -39,7 +38,7 @@ const SignedInMenu = () => {
             />
 
             <Dropdown.Item
-              onClick={signOutHandler}
+              onClick={logOutHandler}
               text='Sign out'
               icon='power'
             />
