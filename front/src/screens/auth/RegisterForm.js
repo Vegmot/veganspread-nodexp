@@ -36,12 +36,14 @@ const RegisterForm = () => {
           })}
           onSubmit={(values, { setSubmitting }) => {
             try {
-              registerUser(
-                values.firstName,
-                values.lastName,
-                values.displayName,
-                values.email,
-                values.password
+              dispatch(
+                registerUser(
+                  values.firstName,
+                  values.lastName,
+                  values.displayName,
+                  values.email,
+                  values.password
+                )
               )
               setSubmitting(false)
               dispatch(closeModal())
