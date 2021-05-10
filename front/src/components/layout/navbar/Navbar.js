@@ -39,6 +39,8 @@ const Navbar = () => {
           {userData ? <SignedInMenu /> : <SignedOutMenu />}
         </Container>
       </Menu>
+
+      <div className='space-below-navbar'></div>
     </>
   )
 }

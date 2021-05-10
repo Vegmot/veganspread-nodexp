@@ -24,7 +24,7 @@ export const fetchPublicPosts = () => async dispatch => {
   try {
     dispatch({ type: GET_PUBLIC_POSTS_REQUEST })
 
-    const res = await axios.get('/api/posts')
+    const res = await axios.get(`/api/posts`)
 
     dispatch({
       type: GET_PUBLIC_POSTS_SUCCESS,

@@ -52,7 +52,7 @@
 }
 
 #feed-compact-screen {
-  padding-top: 5vh;
+  margin: 5vh auto;
   display: flex;
   align-items: center;
   justify-content: center;

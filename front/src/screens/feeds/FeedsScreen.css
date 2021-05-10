@@ -1,6 +1,5 @@
 /* Global */
 .feeds-change-view {
-  margin-top: 10vh;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -18,15 +17,6 @@
 
   .feeds-change-view i {
     cursor: pointer;
-  }
-
-  .load-more-button {
-    width: 50px;
-    margin: 1% auto;
-  }
-
-  .load-more-btn.ui.huge.icon.button {
-    background: transparent;
   }
 
   .feeds-filter-dropdown div.menu.transition {
@@ -56,15 +46,6 @@
 
   .feeds-change-view i {
     cursor: pointer;
-  }
-
-  .load-more-button {
-    width: 50px;
-    margin: 2% auto;
-  }
-
-  .load-more-btn.ui.huge.icon.button {
-    background: transparent;
   }
 
   .feeds-filter-dropdown div.menu.transition {

@@ -1,0 +1,11 @@
+@media (max-width: 500px) {
+}
+
+@media (min-width: 501px) {
+  .create-form-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

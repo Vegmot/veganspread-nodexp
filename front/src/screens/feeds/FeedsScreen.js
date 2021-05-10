@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Feed from './Feed'
-import { Button, Icon, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchPublicPosts, fetchMyPosts } from '../../actions/postActions'
 import FeedCompact from './FeedCompact'
 import { openModal } from '../../components/modals/modalReducer'
+import ChangeFeedView from '../../components/layout/ChangeFeedView'
 import InfiniteScroll from 'react-infinite-scroller'
 
 import './FeedsScreen.css'
@@ -15,21 +15,11 @@ const FeedsScreen = () => {
   const [cardActiveColour, setCardActiveColour] = useState('teal')
   const [listActiveColour, setListActiveColour] = useState('black')
 
+  let page = 0
+  const postsPerPage = 6
+
   const loginUser = useSelector(state => state.loginUser)
   const { userData } = loginUser
-
-  useEffect(() => {
-    if (!userData) dispatch(fetchPublicPosts())
-
-    if (!userData && loadingMy) {
-      loadingMy = false
-      dispatch(openModal({ modalType: 'LoginForm' }))
-    }
-
-    if (userData && successMy) dispatch(fetchMyPosts(userData._id))
-
-    if (successPublic) dispatch(fetchPublicPosts())
-  }, [dispatch])
 
   const getPublicPosts = useSelector(state => state.getPublicPosts)
   const {
@@ -40,6 +30,10 @@ const FeedsScreen = () => {
 
   const getMyPosts = useSelector(state => state.getMyPosts)
   const { loading: loadingMy, success: successMy, posts: myPosts } = getMyPosts
+
+  useEffect(() => {
+    dispatch(fetchPublicPosts())
+  }, [dispatch])
 
   const cardViewHandler = () => {
     if (cardActiveColour === 'black') {
@@ -64,96 +58,78 @@ const FeedsScreen = () => {
   }
 
   const displayMyPosts = userID => {
-    dispatch(fetchMyPosts(userID))
+    if (userData) {
+      dispatch(fetchMyPosts(userID))
+    } else {
+      dispatch(openModal({ modalType: 'LoginForm' }))
+    }
   }
 
   return (
     <>
       {cardActiveColour === 'teal' ? (
         <>
-          <div className='feeds-change-view'>
-            <Icon
-              name='th'
-              color={cardActiveColour}
-              size='large'
-              onClick={cardViewHandler}
-            />
-            <Icon
-              name='th list'
-              color={listActiveColour}
-              size='large'
-              onClick={listViewHandler}
-            />
-
-            <Dropdown icon='filter large' className='feeds-filter-dropdown'>
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  icon='globe'
-                  text='All posts'
-                  onClick={() => displayPublicPosts()}
-                />
-                <Dropdown.Item
-                  icon='write'
-                  text='My posts'
-                  onClick={() => displayMyPosts()}
-                />
-                <Dropdown.Item icon='bookmark' text='Saved posts' />
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
+          <ChangeFeedView
+            cardActiveColour={cardActiveColour}
+            listActiveColour={listActiveColour}
+            cardViewHandler={cardViewHandler}
+            listViewHandler={listViewHandler}
+            displayPublicPosts={displayPublicPosts}
+            displayMyPosts={displayMyPosts}
+          />
 
           <section id='feeds-screen' className='feeds-screen'>
-            {posts
-              .sort((a, b) => {
-                return b.createdAt - a.createdAt
-              })
-              .map(post => (
-                <Feed post={post} key={post._id} />
-              ))}
+            <InfiniteScroll
+              pageStart={page}
+              loadMore=''
+              hasMore=''
+              initialLoad={false}
+            >
+              {posts.length !== 0
+                ? posts
+                    .sort((a, b) => {
+                      return b.createdAt - a.createdAt
+                    })
+                    .map(post => (
+                      <>
+                        <Feed post={post} key={post._id} />
+                      </>
+                    ))
+                : 'There is no post'}
+            </InfiniteScroll>
           </section>
-
-          <div className='load-more-button'>
-            <Button icon='plus circle' size='huge' className='load-more-btn' />
-          </div>
         </>
       ) : (
         <>
+          <ChangeFeedView
+            cardActiveColour={cardActiveColour}
+            listActiveColour={listActiveColour}
+            cardViewHandler={cardViewHandler}
+            listViewHandler={listViewHandler}
+            displayPublicPosts={displayPublicPosts}
+            displayMyPosts={displayMyPosts}
+          />
+
           <section id='feeds-screen' className='feeds-screen'>
-            <div className='feeds-change-view'>
-              <Icon
-                name='th large'
-                color={cardActiveColour}
-                size='large'
-                onClick={cardViewHandler}
-              />
-              <Icon
-                name='th list'
-                color={listActiveColour}
-                size='large'
-                onClick={listViewHandler}
-              />
-
-              <Dropdown icon='filter large'>
-                <Dropdown.Menu>
-                  <Dropdown.Item icon='globe' text='All posts' />
-                  <Dropdown.Item icon='write' text='My posts' />
-                  <Dropdown.Item icon='bookmark' text='Saved posts' />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-
-            {posts
-              .sort((a, b) => {
-                return b.createdAt - a.createdAt
-              })
-              .map(post => (
-                <FeedCompact post={post} key={post._id} />
-              ))}
+            <InfiniteScroll
+              pageStart={page}
+              loadMore='Function'
+              hasMore='Boolean'
+              initialLoad={false}
+            >
+              {posts.length !== 0
+                ? posts
+                    .sort((a, b) => {
+                      return b.createdAt - a.createdAt
+                    })
+                    .map(post => (
+                      <>
+                        <FeedCompact post={post} key={post._id} />
+                      </>
+                    ))
+                : 'There is no post'}
+            </InfiniteScroll>
           </section>
-
-          <div className='load-more-button'>
-            <Button icon='plus circle' size='huge' className='load-more-btn' />
-          </div>
         </>
       )}
     </>

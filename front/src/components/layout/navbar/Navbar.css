@@ -9,4 +9,7 @@
 
 /* desktop view */
 @media (min-width: 401px) {
+  .space-below-navbar {
+    height: 10vh;
+  }
 }

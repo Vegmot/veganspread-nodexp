@@ -2,6 +2,9 @@ import {
   GET_PUBLIC_POSTS_REQUEST,
   GET_PUBLIC_POSTS_SUCCESS,
   GET_PUBLIC_POSTS_FAIL,
+  GET_MORE_POSTS_REQUEST,
+  GET_MORE_POSTS_SUCCESS,
+  GET_MORE_POSTS_FAIL,
   GET_MY_POSTS_REQUEST,
   GET_MY_POSTS_SUCCESS,
   GET_MY_POSTS_FAIL,
@@ -38,6 +41,23 @@ export const getPublicPostsReducer = (state = initialState, action) => {
     case GET_PUBLIC_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload }
 
+    default:
+      return state
+  }
+}
+
+export const getMorePostsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_MORE_POSTS_REQUEST:
+      return { ...state, loading: true, posts: [...state.posts] }
+    case GET_MORE_POSTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        posts: [...state.posts, action.payload],
+      }
+    case GET_MORE_POSTS_FAIL:
+      return { ...state, loading: false, error: action.payload }
     default:
       return state
   }

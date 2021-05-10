@@ -86,10 +86,14 @@ const deletePost = asyncHandler(async (req, res) => {
 // get all posts - public only
 // GET /api/posts
 // public
+
+// ways to paginate
+// https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
 const getAllPublicPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ isPrivate: false })
-    .sort({ createdAt: -1 })
-    .limit(10)
+  // const postsPerPage = 6
+  const posts = await Post.find({ isPrivate: false }).sort({ createdAt: -1 })
+  const count = await Post.countDocuments()
+
   if (!posts) return done(res, 404, 'Posts not found')
 
   return res.status(200).json(posts) // the latest post goes on top
