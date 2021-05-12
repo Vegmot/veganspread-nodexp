@@ -36,28 +36,18 @@ export const getPublicPostsReducer = (state = initialState, action) => {
       return { ...state, loading: true, posts: [] }
 
     case GET_PUBLIC_POSTS_SUCCESS:
-      return { ...state, loading: false, success: true, posts: action.payload }
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        posts: action.payload.posts,
+        page: action.payload.page,
+        pages: action.payload.pages,
+      }
 
     case GET_PUBLIC_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload }
 
-    default:
-      return state
-  }
-}
-
-export const getMorePostsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case GET_MORE_POSTS_REQUEST:
-      return { ...state, loading: true, posts: [...state.posts] }
-    case GET_MORE_POSTS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        posts: [...state.posts, action.payload],
-      }
-    case GET_MORE_POSTS_FAIL:
-      return { ...state, loading: false, error: action.payload }
     default:
       return state
   }
@@ -69,7 +59,14 @@ export const getMyPostsReducer = (state = initialState, action) => {
       return { ...state, loading: true, posts: [] }
 
     case GET_MY_POSTS_SUCCESS:
-      return { ...state, loading: false, success: true, posts: action.payload }
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        posts: action.payload.posts,
+        page: action.payload.page,
+        pages: action.payload.pages,
+      }
 
     case GET_MY_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload }

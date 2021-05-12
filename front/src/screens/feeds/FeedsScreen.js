@@ -9,14 +9,17 @@ import InfiniteScroll from 'react-infinite-scroller'
 
 import './FeedsScreen.css'
 
-const FeedsScreen = () => {
+const FeedsScreen = ({ match }) => {
   const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber || 1
 
   const [cardActiveColour, setCardActiveColour] = useState('teal')
   const [listActiveColour, setListActiveColour] = useState('black')
 
   let page = 0
   const postsPerPage = 6
+
+  const [feed, setFeed] = useState([])
 
   const loginUser = useSelector(state => state.loginUser)
   const { userData } = loginUser
@@ -32,8 +35,8 @@ const FeedsScreen = () => {
   const { loading: loadingMy, success: successMy, posts: myPosts } = getMyPosts
 
   useEffect(() => {
-    dispatch(fetchPublicPosts())
-  }, [dispatch])
+    displayPublicPosts(pageNumber)
+  }, [dispatch, pageNumber])
 
   const cardViewHandler = () => {
     if (cardActiveColour === 'black') {
@@ -53,8 +56,8 @@ const FeedsScreen = () => {
     }
   }
 
-  const displayPublicPosts = () => {
-    dispatch(fetchPublicPosts())
+  const displayPublicPosts = pn => {
+    dispatch(fetchPublicPosts(pn))
   }
 
   const displayMyPosts = userID => {
@@ -80,9 +83,9 @@ const FeedsScreen = () => {
 
           <section id='feeds-screen' className='feeds-screen'>
             <InfiniteScroll
-              pageStart={page}
-              loadMore=''
-              hasMore=''
+              pageStart={pageNumber}
+              loadMore={displayPublicPosts}
+              hasMore={posts.length > 0}
               initialLoad={false}
             >
               {posts.length !== 0

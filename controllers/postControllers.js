@@ -90,25 +90,39 @@ const deletePost = asyncHandler(async (req, res) => {
 // ways to paginate
 // https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
 const getAllPublicPosts = asyncHandler(async (req, res) => {
-  // const postsPerPage = 6
-  const posts = await Post.find({ isPrivate: false }).sort({ createdAt: -1 })
+  const postsPerLoad = 6
+  const page = +req.query.pageNumber || 1
+
   const count = await Post.countDocuments()
+  const posts = await Post.find({ isPrivate: false })
+    .sort({ createdAt: -1 })
+    .limit(postsPerLoad)
+    .skip(postsPerLoad * (page - 1))
 
   if (!posts) return done(res, 404, 'Posts not found')
 
-  return res.status(200).json(posts) // the latest post goes on top
+  return res
+    .status(200)
+    .json({ posts, page, pages: Math.ceil(count / postsPerLoad) })
 })
 
 // get logged in user's posts
 // GET /api/posts/:uid
 // private
 const getMyPosts = asyncHandler(async (req, res) => {
+  const postsPerLoad = 6
+  const page = +req.query.pageNumber || 1
+
+  const count = await Post.countDocuments()
   const posts = await Post.find({ user: req.user._id })
     .sort({ createdAt: -1 })
-    .limit(10)
+    .limit(postsPerLoad)
+    .skip(postsPerLoad * (page - 1))
   if (!posts) return done(res, 404, 'Posts not found')
 
-  return res.status(200).json(posts)
+  return res
+    .status(200)
+    .json({ posts, page, pages: Math.ceil(count / postsPerLoad) })
 })
 
 export {

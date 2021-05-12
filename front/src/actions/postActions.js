@@ -20,11 +20,11 @@ import {
   DELETE_POST_FAIL,
 } from '../constants/postConstants'
 
-export const fetchPublicPosts = () => async dispatch => {
+export const fetchPublicPosts = pageNumber => async dispatch => {
   try {
     dispatch({ type: GET_PUBLIC_POSTS_REQUEST })
 
-    const res = await axios.get(`/api/posts`)
+    const res = await axios.get(`/api/posts?page=${pageNumber}`)
 
     dispatch({
       type: GET_PUBLIC_POSTS_SUCCESS,

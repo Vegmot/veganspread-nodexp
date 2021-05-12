@@ -23,7 +23,7 @@ const App = () => {
         <Route exact path='/contact' component={ContactScreen} />
         <Route exact path='/feed/:id' component={EachFeedScreen} />
         <Route exact path='/create' component={PostForm} />
-        <Route exact path='/' component={FeedsScreen} />
+        <Route exact path='/:pageNumber?' component={FeedsScreen} />
         <Route component={NotFound} />
       </Switch>
     </>

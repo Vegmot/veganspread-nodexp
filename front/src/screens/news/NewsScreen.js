@@ -8,18 +8,7 @@ const NewsScreen = () => {
   const [newsData, setNewsData] = useState([])
   const endpoint = 'Top Headlines'
   const country = 'us'
-  const [isBottom, setIsBottom] = useState(false)
   const [loading, setLoading] = useState(false)
-
-  // if the scroll bar reaches 60 pixels from the bottom
-  // isBottom will be set to true
-  // and another api call get request will be made
-  const howManyPixelsFromBottom = 60
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     // fetchNewsData()
@@ -34,26 +23,6 @@ const NewsScreen = () => {
 
     setNewsData(res.data.articles)
     setLoading(false)
-  }
-
-  const handleScroll = () => {
-    const scrollTop =
-      (document.documentElement && document.documentElement.scrollTop) ||
-      document.body.scrollTop
-
-    const scrollHeight =
-      (document.documentElement && document.documentElement.scrollHeight) ||
-      document.body.scrollHeight
-
-    // if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-    if (
-      scrollTop + window.innerHeight + howManyPixelsFromBottom >=
-      scrollHeight
-    ) {
-      setIsBottom(true)
-      setLoading(true)
-      console.log('Fetch more items')
-    }
   }
 
   return (
