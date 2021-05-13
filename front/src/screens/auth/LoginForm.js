@@ -6,7 +6,6 @@ import MyTextInput from '../../components/form/MyTextInput'
 import { Button, Divider, Label } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../components/modals/modalReducer'
-import SocialLogin from './SocialLogin'
 import { login } from '../../actions/userActions'
 
 const LoginForm = () => {
@@ -58,10 +57,6 @@ const LoginForm = () => {
               color='teal'
               content='Login'
             />
-
-            <Divider horizontal>Or</Divider>
-
-            <SocialLogin />
           </Form>
         )}
       </Formik>

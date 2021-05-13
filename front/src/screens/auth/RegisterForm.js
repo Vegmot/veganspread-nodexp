@@ -6,7 +6,6 @@ import MyTextInput from '../../components/form/MyTextInput'
 import ModalWrapper from '../../components/modals/ModalWrapper'
 import { closeModal } from '../../components/modals/modalReducer'
 import { registerUser } from '../../actions/userActions'
-import SocialLogin from '../auth/SocialLogin'
 import { Button, Divider } from 'semantic-ui-react'
 
 const RegisterForm = () => {
@@ -78,10 +77,6 @@ const RegisterForm = () => {
                 color='teal'
                 content='Register'
               />
-
-              <Divider horizontal>Or</Divider>
-
-              <SocialLogin />
             </Form>
           )}
         </Formik>

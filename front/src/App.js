@@ -11,6 +11,8 @@ import NewsScreen from './screens/news/NewsScreen'
 import UserDetailsScreen from './screens/users/UserDetailScreen'
 import PostForm from './screens/feeds/posts/PostForm'
 
+import SandBox from './screens/sandbox/SandBox'
+
 const App = () => {
   return (
     <>
@@ -23,6 +25,7 @@ const App = () => {
         <Route exact path='/contact' component={ContactScreen} />
         <Route exact path='/feed/:id' component={EachFeedScreen} />
         <Route exact path='/create' component={PostForm} />
+        <Route exact path='/sandbox' component={SandBox} />
         <Route exact path='/:pageNumber?' component={FeedsScreen} />
         <Route component={NotFound} />
       </Switch>

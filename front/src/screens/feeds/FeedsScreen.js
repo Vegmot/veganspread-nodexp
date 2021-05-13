@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Feed from './Feed'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPublicPosts, fetchMyPosts } from '../../actions/postActions'
+import { fetchPublicPosts } from '../../actions/postActions'
 import FeedCompact from './FeedCompact'
 import { openModal } from '../../components/modals/modalReducer'
 import ChangeFeedView from '../../components/layout/ChangeFeedView'
@@ -31,12 +31,13 @@ const FeedsScreen = ({ match }) => {
     posts,
   } = getPublicPosts
 
-  const getMyPosts = useSelector(state => state.getMyPosts)
-  const { loading: loadingMy, success: successMy, posts: myPosts } = getMyPosts
-
   useEffect(() => {
-    displayPublicPosts(pageNumber)
+    dispatch(fetchPublicPosts(pageNumber))
   }, [dispatch, pageNumber])
+
+  const displayPublicPosts = () => {
+    dispatch(fetchPublicPosts(pageNumber))
+  }
 
   const cardViewHandler = () => {
     if (cardActiveColour === 'black') {
@@ -56,18 +57,6 @@ const FeedsScreen = ({ match }) => {
     }
   }
 
-  const displayPublicPosts = pn => {
-    dispatch(fetchPublicPosts(pn))
-  }
-
-  const displayMyPosts = userID => {
-    if (userData) {
-      dispatch(fetchMyPosts(userID))
-    } else {
-      dispatch(openModal({ modalType: 'LoginForm' }))
-    }
-  }
-
   return (
     <>
       {cardActiveColour === 'teal' ? (
@@ -78,13 +67,12 @@ const FeedsScreen = ({ match }) => {
             cardViewHandler={cardViewHandler}
             listViewHandler={listViewHandler}
             displayPublicPosts={displayPublicPosts}
-            displayMyPosts={displayMyPosts}
           />
 
           <section id='feeds-screen' className='feeds-screen'>
             <InfiniteScroll
               pageStart={pageNumber}
-              loadMore={displayPublicPosts}
+              loadMore={fetchPublicPosts}
               hasMore={posts.length > 0}
               initialLoad={false}
             >
@@ -110,7 +98,6 @@ const FeedsScreen = ({ match }) => {
             cardViewHandler={cardViewHandler}
             listViewHandler={listViewHandler}
             displayPublicPosts={displayPublicPosts}
-            displayMyPosts={displayMyPosts}
           />
 
           <section id='feeds-screen' className='feeds-screen'>
