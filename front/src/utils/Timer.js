@@ -5,12 +5,12 @@ import React, { useEffect, useState, useRef } from 'react'
 const Timer = () => {
   const [timer, setTimer] = useState(0)
   const [isActive, setIsActive] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
+  const [isTimerGoing, setIsTimerGoing] = useState(false)
   const increment = useRef(null)
 
   const handleStart = () => {
     setIsActive(true)
-    setIsPaused(true)
+    setIsTimerGoing(true)
     increment.current = setInterval(() => {
       setTimer(timer => timer + 1)
     }, 1000)
@@ -18,11 +18,11 @@ const Timer = () => {
 
   const handlePause = () => {
     clearInterval(increment.current)
-    setIsPaused(false)
+    setIsTimerGoing(false)
   }
 
   const handleResume = () => {
-    setIsPaused(true)
+    setIsTimerGoing(true)
     increment.current = setInterval(() => {
       setTimer(timer => timer + 1)
     }, 1000)
@@ -31,16 +31,18 @@ const Timer = () => {
   const handleReset = () => {
     clearInterval(increment.current)
     setIsActive(false)
-    setIsPaused(false)
+    setIsTimerGoing(false)
     setTimer(0)
   }
 
   // timer will start as soon as the page gets loaded
   useEffect(() => {
     handleStart()
+
+    return () => handleReset()
   }, [])
 
-  const formatTime = () => {
+  const formatAndDisplayTime = () => {
     const getSeconds = `0${timer % 60}`.slice(-2)
     const minutes = `${Math.floor(timer / 60)}`
     const getMinutes = `0${minutes % 60}`.slice(-2)
@@ -53,11 +55,11 @@ const Timer = () => {
     <>
       <h3>Timer</h3>
       <div>
-        <p>{formatTime()}</p>
+        <p>{formatAndDisplayTime()}</p>
         <div>
-          {!isActive && !isPaused ? (
+          {!isActive && !isTimerGoing ? (
             <button onClick={handleStart}>Start</button>
-          ) : isPaused ? (
+          ) : isTimerGoing ? (
             <button onClick={handlePause}>Pause</button>
           ) : (
             <button onClick={handleResume}>Resume</button>

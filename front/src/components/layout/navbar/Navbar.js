@@ -31,8 +31,6 @@ const Navbar = () => {
 
           <Menu.Item as={NavLink} to='/news' name='News' />
 
-          <Menu.Item as={NavLink} to='/about' name='About' />
-
           <Menu.Item as={NavLink} to='/contact' name='Contact' />
 
           <Menu.Item as={NavLink} to='/sandbox' name='Sandbox' />

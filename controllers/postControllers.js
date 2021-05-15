@@ -94,10 +94,16 @@ const getAllPublicPosts = asyncHandler(async (req, res) => {
   const page = +req.query.pageNumber || 1
 
   const count = await Post.countDocuments()
-  const posts = await Post.find({ isPrivate: false })
+  const posts = await Post.find({
+    $or: [{ isPrivate: false }, { user: req.user._id }],
+  })
     .sort({ createdAt: -1 })
     .limit(postsPerLoad)
     .skip(postsPerLoad * (page - 1))
+
+  // two conditions for public posts page
+  // 1. isPrivate: false
+  // 2. logged in user's posts
 
   if (!posts) return done(res, 404, 'Posts not found')
 
