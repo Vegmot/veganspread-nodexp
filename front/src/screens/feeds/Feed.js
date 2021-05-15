@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
-import { displayTimestamp } from '../../utils/displayTimestamp'
 import { formatDistance } from 'date-fns'
 
 import './Feed.css'
@@ -54,7 +53,13 @@ const Feed = ({ post }) => {
 
           <div className='feed-content-image'>
             <Link to={`/feed/${post._id}`}>
-              <Image src={post.image} fluid centered alt='Sample image' />
+              <Image
+                src={post.image}
+                fluid
+                centered
+                alt='Sample image'
+                style={{ maxHeight: '400px' }}
+              />
             </Link>
           </div>
 

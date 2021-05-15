@@ -5,6 +5,15 @@
   justify-content: flex-end;
 }
 
+i.circle.large.disabled.icon {
+  width: 100%;
+  margin: 0 auto 5vh auto;
+}
+
+.ui.active.centered.inline.loader {
+  margin: 20vh auto;
+}
+
 /* Media queries for mobile devices */
 @media (max-width: 500px) {
   #feeds-screen {

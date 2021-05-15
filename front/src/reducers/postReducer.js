@@ -2,9 +2,6 @@ import {
   GET_PUBLIC_POSTS_REQUEST,
   GET_PUBLIC_POSTS_SUCCESS,
   GET_PUBLIC_POSTS_FAIL,
-  GET_MORE_POSTS_REQUEST,
-  GET_MORE_POSTS_SUCCESS,
-  GET_MORE_POSTS_FAIL,
   GET_MY_POSTS_REQUEST,
   GET_MY_POSTS_SUCCESS,
   GET_MY_POSTS_FAIL,
@@ -40,7 +37,7 @@ export const getPublicPostsReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         success: true,
-        posts: action.payload.posts,
+        posts: [...state.posts, ...action.payload.posts],
         page: action.payload.page,
         pages: action.payload.pages,
       }

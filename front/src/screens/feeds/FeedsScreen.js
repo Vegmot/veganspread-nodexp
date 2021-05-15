@@ -1,43 +1,42 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import Feed from './Feed'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchPublicPosts } from '../../actions/postActions'
+import { useSelector } from 'react-redux'
 import FeedCompact from './FeedCompact'
 import { openModal } from '../../components/modals/modalReducer'
 import ChangeFeedView from '../../components/layout/ChangeFeedView'
-import InfiniteScroll from 'react-infinite-scroller'
+import { usePublicPostsInfiniteScroll } from '../../utils/useInfiniteScroll'
 
 import './FeedsScreen.css'
+import { Icon, Loader } from 'semantic-ui-react'
 
-const FeedsScreen = ({ match }) => {
-  const dispatch = useDispatch()
-  const pageNumber = match.params.pageNumber || 1
-
+const FeedsScreen = () => {
   const [cardActiveColour, setCardActiveColour] = useState('teal')
   const [listActiveColour, setListActiveColour] = useState('black')
+  const [page, setPage] = useState(1)
+  const {
+    loading: loadingPosts,
+    error: errorPosts,
+    posts,
+    hasMore,
+  } = usePublicPostsInfiniteScroll(page)
 
-  let page = 0
-  const postsPerPage = 6
-
-  const [feed, setFeed] = useState([])
+  const observer = useRef()
+  const lastPostRef = useCallback(
+    node => {
+      if (loadingPosts) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage(prevPN => prevPN + 1)
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [loadingPosts, hasMore]
+  )
 
   const loginUser = useSelector(state => state.loginUser)
   const { userData } = loginUser
-
-  const getPublicPosts = useSelector(state => state.getPublicPosts)
-  const {
-    loading: loadingPublic,
-    success: successPublic,
-    posts,
-  } = getPublicPosts
-
-  useEffect(() => {
-    dispatch(fetchPublicPosts(pageNumber))
-  }, [dispatch, pageNumber])
-
-  const displayPublicPosts = () => {
-    dispatch(fetchPublicPosts(pageNumber))
-  }
 
   const cardViewHandler = () => {
     if (cardActiveColour === 'black') {
@@ -66,28 +65,30 @@ const FeedsScreen = ({ match }) => {
             listActiveColour={listActiveColour}
             cardViewHandler={cardViewHandler}
             listViewHandler={listViewHandler}
-            displayPublicPosts={displayPublicPosts}
           />
 
           <section id='feeds-screen' className='feeds-screen'>
-            <InfiniteScroll
-              pageStart={pageNumber}
-              loadMore={fetchPublicPosts}
-              hasMore={posts.length > 0}
-              initialLoad={false}
-            >
-              {posts.length !== 0
-                ? posts
-                    .sort((a, b) => {
-                      return b.createdAt - a.createdAt
-                    })
-                    .map(post => (
-                      <>
-                        <Feed post={post} key={post._id} />
-                      </>
-                    ))
-                : 'There is no post'}
-            </InfiniteScroll>
+            {posts.length !== 0
+              ? posts
+                  .sort((a, b) => {
+                    return b.createdAt - a.createdAt
+                  })
+                  .map((post, index) => {
+                    if (posts.length === index + 1) {
+                      return (
+                        <div ref={lastPostRef} key={post._id}>
+                          <Feed post={post} />
+                        </div>
+                      )
+                    } else {
+                      return (
+                        <div key={post._id}>
+                          <Feed post={post} />
+                        </div>
+                      )
+                    }
+                  })
+              : 'There is no post'}
           </section>
         </>
       ) : (
@@ -97,31 +98,39 @@ const FeedsScreen = ({ match }) => {
             listActiveColour={listActiveColour}
             cardViewHandler={cardViewHandler}
             listViewHandler={listViewHandler}
-            displayPublicPosts={displayPublicPosts}
           />
 
           <section id='feeds-screen' className='feeds-screen'>
-            <InfiniteScroll
-              pageStart={page}
-              loadMore='Function'
-              hasMore='Boolean'
-              initialLoad={false}
-            >
-              {posts.length !== 0
-                ? posts
-                    .sort((a, b) => {
-                      return b.createdAt - a.createdAt
-                    })
-                    .map(post => (
-                      <>
-                        <FeedCompact post={post} key={post._id} />
-                      </>
-                    ))
-                : 'There is no post'}
-            </InfiniteScroll>
+            {loadingPosts && <Loader active size='big' inline='centered' />}
+            {posts.length !== 0
+              ? posts
+                  .sort((a, b) => {
+                    return b.createdAt - a.createdAt
+                  })
+                  .map((post, index) => {
+                    if (posts.length === index + 1) {
+                      return (
+                        <div ref={lastPostRef} key={post._id}>
+                          <FeedCompact post={post} />
+                        </div>
+                      )
+                    } else {
+                      return (
+                        <div key={post._id}>
+                          <FeedCompact post={post} />
+                        </div>
+                      )
+                    }
+                  })
+              : 'There is no post'}
           </section>
         </>
       )}
+
+      {loadingPosts && <Loader active size='big' inline='centered' />}
+      {errorPosts && 'There was an error'}
+
+      {!hasMore && <Icon name='circle' size='large' disabled />}
     </>
   )
 }

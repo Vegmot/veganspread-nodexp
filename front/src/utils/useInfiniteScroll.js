@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const useInfiniteScrollFeed = pageNumber => {
+export const usePublicPostsInfiniteScroll = pg => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [posts, setPosts] = useState([])
@@ -13,8 +13,8 @@ const useInfiniteScrollFeed = pageNumber => {
 
     axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/posts',
-      params: { page: pageNumber },
+      url: '/api/posts',
+      params: { page: pg },
     })
       .then(res => {
         setPosts(prevPosts => {
@@ -25,9 +25,8 @@ const useInfiniteScrollFeed = pageNumber => {
       })
       .catch(e => {
         setError('There was an error')
+        setLoading(false)
       })
-  }, [pageNumber])
+  }, [pg])
   return { loading, error, posts, hasMore }
 }
-
-export default useInfiniteScrollFeed

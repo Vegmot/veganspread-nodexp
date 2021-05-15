@@ -9,6 +9,10 @@
   color: #1b1c1d;
 }
 
+.feed-content-image {
+  max-height: 400px;
+}
+
 /* Media queries for mobile device view */
 @media (max-width: 500px) {
   #feed.feed {
