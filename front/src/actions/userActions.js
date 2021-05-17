@@ -49,50 +49,45 @@ export const login = (email, password) => async dispatch => {
   }
 }
 
-export const registerUser = (
-  fName,
-  lName,
-  dName,
-  email,
-  password
-) => async dispatch => {
-  try {
-    dispatch({ type: REGISTER_USER_REQUEST })
+export const registerUser =
+  (fName, lName, dName, email, password) => async dispatch => {
+    try {
+      dispatch({ type: REGISTER_USER_REQUEST })
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const res = await axios.post(
+        '/api/users/register',
+        { fName, lName, dName, email, password },
+        config
+      )
+
+      dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: res.data,
+      })
+
+      dispatch({
+        type: LOG_IN_USER_SUCCESS,
+        payload: res.data,
+      })
+
+      localStorage.setItem('userData', JSON.stringify(res.data))
+      document.location.href = '/'
+    } catch (error) {
+      dispatch({
+        type: REGISTER_USER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-
-    const res = await axios.post(
-      '/api/users/register',
-      { fName, lName, dName, email, password },
-      config
-    )
-
-    dispatch({
-      type: REGISTER_USER_SUCCESS,
-      payload: res.data,
-    })
-
-    dispatch({
-      type: LOG_IN_USER_SUCCESS,
-      payload: res.data,
-    })
-
-    localStorage.setItem('userData', JSON.stringify(res.data))
-    document.location.href = '/'
-  } catch (error) {
-    dispatch({
-      type: REGISTER_USER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
 export const logout = () => dispatch => {
   localStorage.removeItem('userData')

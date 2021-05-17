@@ -36,7 +36,8 @@ const authUser = asyncHandler(async (req, res) => {
 // POST /api/users/register
 // public
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstName, lastName, email, password } = req.body
+  const { firstName, lastName, displayName, email, password } = req.body
+
   const imageNumber = Number(await User.countDocuments({})) + 1
   const avatar = `https://i.pravatar.cc/250?img=${imageNumber}`
 
@@ -49,8 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
       firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
     lastName:
       lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
-    displayName:
-      firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
+    displayName,
     email,
     password,
     avatar,
@@ -66,6 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email: user.email,
     avatar: user.avatar,
     isAdmin: user.isAdmin,
+    isPremium: user.isPremium,
     token: generateToken(user._id),
   })
 })

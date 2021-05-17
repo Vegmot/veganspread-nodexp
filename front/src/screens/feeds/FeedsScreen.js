@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react'
 import Feed from './Feed'
-import { useSelector } from 'react-redux'
 import FeedCompact from './FeedCompact'
+import { useSelector } from 'react-redux'
 import { openModal } from '../../components/modals/modalReducer'
 import ChangeFeedView from '../../components/layout/ChangeFeedView'
 import { usePublicPostsInfiniteScroll } from '../../utils/useInfiniteScroll'

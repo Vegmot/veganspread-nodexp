@@ -20,11 +20,11 @@ import {
   DELETE_POST_FAIL,
 } from '../constants/postConstants'
 
-export const fetchPublicPosts = pageNumber => async dispatch => {
+export const fetchPublicPosts = page => async dispatch => {
   try {
     dispatch({ type: GET_PUBLIC_POSTS_REQUEST })
 
-    const res = await axios.get(`/api/posts?page=${pageNumber}`)
+    const res = await axios.get(`/api/posts?page=${page}`)
 
     dispatch({
       type: GET_PUBLIC_POSTS_SUCCESS,
@@ -41,7 +41,7 @@ export const fetchPublicPosts = pageNumber => async dispatch => {
   }
 }
 
-export const fetchMyPosts = userID => async (dispatch, getState) => {
+export const fetchMyPosts = uid => async (dispatch, getState) => {
   try {
     dispatch({ type: GET_MY_POSTS_REQUEST })
 
@@ -55,7 +55,7 @@ export const fetchMyPosts = userID => async (dispatch, getState) => {
       },
     }
 
-    const res = await axios.get(`/api/posts/${userID}`, config)
+    const res = await axios.get(`/api/posts/${uid}`, config)
 
     dispatch({
       type: GET_MY_POSTS_SUCCESS,
@@ -72,11 +72,11 @@ export const fetchMyPosts = userID => async (dispatch, getState) => {
   }
 }
 
-export const getPostById = postID => async dispatch => {
+export const fetchPostById = pid => async dispatch => {
   try {
     dispatch({ type: GET_POST_BY_ID_REQUEST })
 
-    const res = await axios.get(`/api/posts/${postID}`)
+    const res = await axios.get(`/api/posts/${pid}`)
 
     dispatch({
       type: GET_POST_BY_ID_SUCCESS,
@@ -157,7 +157,7 @@ export const updatePost = post => async (dispatch, getState) => {
   }
 }
 
-export const deletePost = postID => async (dispatch, getState) => {
+export const deletePost = pid => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_POST_REQUEST })
 
@@ -171,7 +171,7 @@ export const deletePost = postID => async (dispatch, getState) => {
       },
     }
 
-    await axios.delete(`/api/posts/${postID}`, config)
+    await axios.delete(`/api/posts/${pid}`, config)
 
     dispatch({
       type: DELETE_POST_SUCCESS,

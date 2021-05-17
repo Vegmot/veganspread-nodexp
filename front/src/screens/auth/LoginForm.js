@@ -16,8 +16,8 @@ const LoginForm = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={Yup.object({
-          email: Yup.string().email().required('Required field'),
-          password: Yup.string().required('Required field'),
+          email: Yup.string().email().required('Please enter email'),
+          password: Yup.string().required('Please enter password'),
         })}
         onSubmit={(values, { setSubmitting, setErrors }) => {
           try {
@@ -39,12 +39,12 @@ const LoginForm = () => {
               type='password'
             />
 
-            {errors.auth && (
+            {errors && (
               <Label
                 basic
                 color='red'
                 style={{ marginBottom: '10' }}
-                content={errors.auth}
+                content={errors && JSON.stringify(errors)}
               />
             )}
 

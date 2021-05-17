@@ -16,8 +16,7 @@ import {
 
 const initialState = {
   loading: false,
-  user: null,
-  userData: null,
+  userData: {},
   success: false,
   error: null,
 }
@@ -25,12 +24,11 @@ const initialState = {
 export const loginUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_USER_REQUEST:
-      return { ...state, loading: true, user: null }
+      return { ...state, loading: true, userData: {} }
     case LOG_IN_USER_SUCCESS:
       return {
         ...state,
         loading: false,
-        success: true,
         userData: action.payload,
       }
     case LOG_IN_USER_FAIL:
@@ -43,12 +41,11 @@ export const loginUserReducer = (state = initialState, action) => {
 export const registerUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_USER_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loading: true, userData: {} }
     case REGISTER_USER_SUCCESS:
       return {
         ...state,
         loading: false,
-        success: true,
         userData: action.payload,
       }
     case REGISTER_USER_FAIL:

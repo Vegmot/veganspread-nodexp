@@ -50,6 +50,6 @@ export const displayTimestamp = (timeNow, timePosted) => {
 
   // second
   if (timePassedInSeconds < 60) {
-    return 'Just now'
+    return 'less than a minute ago'
   }
 }

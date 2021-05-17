@@ -6,7 +6,7 @@ import MyTextInput from '../../components/form/MyTextInput'
 import ModalWrapper from '../../components/modals/ModalWrapper'
 import { closeModal } from '../../components/modals/modalReducer'
 import { registerUser } from '../../actions/userActions'
-import { Button, Divider } from 'semantic-ui-react'
+import { Button, Label, Divider } from 'semantic-ui-react'
 
 const RegisterForm = () => {
   const dispatch = useDispatch()
@@ -21,6 +21,7 @@ const RegisterForm = () => {
             displayName: '',
             email: '',
             password: '',
+            confirmPassword: '',
           }}
           validationSchema={Yup.object({
             firstName: Yup.string().required('Please enter your first name'),
@@ -32,9 +33,17 @@ const RegisterForm = () => {
               .required('Please enter valid email address')
               .email(),
             password: Yup.string().required('Password is required'),
+            confirmPassword: Yup.string().when('password', {
+              is: val => (val && val.length > 0 ? true : false),
+              then: Yup.string().oneOf(
+                [Yup.ref('password')],
+                'Passwords do not match'
+              ),
+            }),
           })}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={(values, { setSubmitting, setErrors }) => {
             try {
+              console.log(values)
               dispatch(
                 registerUser(
                   values.firstName,
@@ -47,8 +56,8 @@ const RegisterForm = () => {
               setSubmitting(false)
               dispatch(closeModal())
             } catch (error) {
+              setErrors({ errors: error.message })
               setSubmitting(false)
-              console.error(error.message)
             }
           }}
         >
@@ -65,6 +74,11 @@ const RegisterForm = () => {
               <MyTextInput
                 name='password'
                 placeholder='Password'
+                type='password'
+              />
+              <MyTextInput
+                name='confirmPassword'
+                placeholder='Confirm password'
                 type='password'
               />
 

@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   writeComment,
+  getAllComments,
   getComment,
   getAllMyComments,
   updateComment,
@@ -10,7 +11,7 @@ import { protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/:pid').post(protect, writeComment)
+router.route('/:pid').get(getAllComments).post(protect, writeComment)
 router.route('/:uid').get(protect, getAllMyComments)
 router
   .route('/:pid/:cid')

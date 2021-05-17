@@ -2,6 +2,8 @@ import React from 'react'
 import { Icon, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import './ChangeFeedView.css'
+
 const ChangeFeedView = ({
   cardActiveColour,
   listActiveColour,

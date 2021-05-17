@@ -1,23 +1,65 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Button, Icon, Image } from 'semantic-ui-react'
-import { feedData } from '../../data/feedData'
 import { displayTimestamp } from '../../utils/displayTimestamp'
 import EachComment from './comments/EachComment'
+import { useCommentsInfiniteScroll } from '../../utils/useInfiniteScroll'
 
 import './EachFeedScreen.css'
 
 const EachFeedScreen = ({ history, match }) => {
-  // this part actually needs to make a get request later
-  const feed = feedData.find(f => f.feedID === match.params.id)
-  const [comments, setComments] = useState(feed.comments)
+  const dispatch = useDispatch()
+  const pid = match.params.id
 
+  const [loadingPost, setLoadingPost] = useState(false)
+  const [post, setPost] = useState({})
+
+  useEffect(() => {
+    fetchPost(pid)
+  }, [pid])
+
+  const fetchPost = async postID => {
+    setLoadingPost(true)
+    const res = await axios.get(`/api/posts/${postID}`)
+
+    const post = res.data
+    setPost(post)
+    setLoadingPost(false)
+  }
+
+  const [page, setPage] = useState(1)
   const [heartName, setHeartName] = useState('heart outline')
   const [heartColour, setHeartColour] = useState('black')
   const [bookmarkName, setBookmarkName] = useState('bookmark outline')
   const [bookmarkColour, setBookmarkColour] = useState('black')
 
   const [commentText, setCommentText] = useState('')
+  const {
+    loading: loadingComments,
+    error: errorComments,
+    comments,
+    hasMore,
+  } = useCommentsInfiniteScroll(pid, page)
+
+  const observer = useRef()
+  const lastCommentRef = useCallback(
+    node => {
+      if (loadingComments) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage(prevPN => prevPN + 1)
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [loadingComments, hasMore]
+  )
+
+  const loginUser = useSelector(state => state.loginUser)
+  const { userData } = loginUser
 
   const postTextLength = 150
 
@@ -52,7 +94,7 @@ const EachFeedScreen = ({ history, match }) => {
 
   const postCommentHandler = e => {
     e.preventDefault()
-    setComments([formData, ...comments])
+
     setCommentText('')
   }
 
@@ -74,11 +116,11 @@ const EachFeedScreen = ({ history, match }) => {
         <div className='each-feed-contents-area'>
           <div className='each-feed-container'>
             <div className='each-feed-content-image'>
-              <Image src={feed.image || ''} fluid centered alt='Sample image' />
+              <Image src={post.image || ''} fluid centered alt='Sample image' />
             </div>
 
             <div className='each-feed-details'>
-              {feed.isAd ? (
+              {post.isAd ? (
                 <>
                   <Icon
                     link
@@ -124,20 +166,20 @@ const EachFeedScreen = ({ history, match }) => {
 
             <div className='each-feed-timestamp'>
               <small style={{ color: '#aaa ' }}>
-                {feed.isAd ? '' : displayTimestamp(Date.now(), feed.createdAt)}
+                {post.isAd ? '' : displayTimestamp(Date.now(), post.createdAt)}
               </small>
             </div>
 
             <div className='each-feed-content-text'>
               <p>
                 <span className='each-feed-content-text-user'>
-                  {feed.isAd ? (
+                  {post.isAd ? (
                     <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
                   ) : (
-                    <strong>{feed.userID}</strong>
+                    <strong>{post.userID}</strong>
                   )}
                 </span>{' '}
-                {feed.text}
+                {post.text}
               </p>
             </div>
           </div>
@@ -150,9 +192,21 @@ const EachFeedScreen = ({ history, match }) => {
                 .sort((a, b) => {
                   return b.createdAt - a.createdAt
                 })
-                .map(comment => (
-                  <EachComment comment={comment} key={comment.commentID} />
-                ))
+                .map((comment, index) => {
+                  if (comments.length === index + 1) {
+                    return (
+                      <div ref={lastCommentRef} key={comment._id}>
+                        <EachComment comment={comment} />
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div key={comment._id}>
+                        <EachComment comment={comment} />
+                      </div>
+                    )
+                  }
+                })
             ) : (
               <p>This feed has no comment yet.</p>
             )}

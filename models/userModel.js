@@ -5,6 +5,8 @@ const userSchema = mongoose.Schema(
   {
     displayName: {
       type: String,
+      required: true,
+      unique: true,
     },
     firstName: {
       type: String,
@@ -26,6 +28,7 @@ const userSchema = mongoose.Schema(
     avatar: {
       type: String,
       default: '../front/public/assets/user.png',
+      unique: true,
     },
     createdAt: {
       type: Date,

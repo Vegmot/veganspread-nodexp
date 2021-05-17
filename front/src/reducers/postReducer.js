@@ -22,7 +22,7 @@ import {
 const initialState = {
   loading: false,
   success: false,
-  post: null,
+  post: {},
   posts: [],
   error: null,
 }

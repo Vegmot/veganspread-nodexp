@@ -17,11 +17,11 @@ import {
   DELETE_COMMENT_FAIL,
 } from '../constants/commentConstants'
 
-export const getComments = () => async dispatch => {
+export const getComments = pid => async dispatch => {
   try {
     dispatch({ type: GET_COMMENTS_REQUEST })
 
-    const res = await axios.get('/api/comments')
+    const res = await axios.get(`/api/comments/${pid}`)
 
     dispatch({
       type: GET_COMMENTS_SUCCESS,
@@ -38,10 +38,7 @@ export const getComments = () => async dispatch => {
   }
 }
 
-export const getCommentById = (postID, commentID) => async (
-  dispatch,
-  getState
-) => {
+export const getCommentById = (pid, cid) => async (dispatch, getState) => {
   try {
     dispatch({ type: GET_COMMENT_BY_ID_REQUEST })
 
@@ -55,7 +52,7 @@ export const getCommentById = (postID, commentID) => async (
       },
     }
 
-    const res = await axios.get(`/api/comments/${postID}/${commentID}`, config)
+    const res = await axios.get(`/api/comments/${pid}/${cid}`, config)
 
     dispatch({
       type: GET_COMMENT_BY_ID_SUCCESS,
@@ -72,7 +69,7 @@ export const getCommentById = (postID, commentID) => async (
   }
 }
 
-export const writeComment = (postID, text) => async (dispatch, getState) => {
+export const writeComment = (pid, text) => async (dispatch, getState) => {
   try {
     dispatch({ type: WRITE_COMMENT_REQUEST })
 
@@ -87,7 +84,7 @@ export const writeComment = (postID, text) => async (dispatch, getState) => {
       },
     }
 
-    const res = await axios.post(`/api/comments/${postID}`, { text }, config)
+    const res = await axios.post(`/api/comments/${pid}`, { text }, config)
 
     dispatch({
       type: WRITE_COMMENT_SUCCESS,
@@ -104,49 +101,44 @@ export const writeComment = (postID, text) => async (dispatch, getState) => {
   }
 }
 
-export const updateComment = (postID, comment, text) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    dispatch({ type: UPDATE_COMMENT_REQUEST })
+export const updateComment =
+  (pid, comment, text) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: UPDATE_COMMENT_REQUEST })
 
-    const {
-      loginUser: { userData },
-    } = getState()
+      const {
+        loginUser: { userData },
+      } = getState()
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-        'Content-Type': 'application/json',
-      },
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const res = await axios.patch(
+        `/api/comments/${pid}/${comment._id}`,
+        { text },
+        config
+      )
+
+      dispatch({
+        type: UPDATE_COMMENT_SUCCESS,
+        payload: res.data,
+      })
+    } catch (error) {
+      dispatch({
+        type: UPDATE_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-
-    const res = await axios.patch(
-      `/api/comments/${postID}/${comment._id}`,
-      { text },
-      config
-    )
-
-    dispatch({
-      type: UPDATE_COMMENT_SUCCESS,
-      payload: res.data,
-    })
-  } catch (error) {
-    dispatch({
-      type: UPDATE_COMMENT_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
-export const deleteComment = (postID, commentID) => async (
-  dispatch,
-  getState
-) => {
+export const deleteComment = (pid, cid) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_COMMENT_REQUEST })
 
@@ -160,7 +152,7 @@ export const deleteComment = (postID, commentID) => async (
       },
     }
 
-    await axios.delete(`/api/comments/${postID}/${commentID}`, config)
+    await axios.delete(`/api/comments/${pid}/${cid}`, config)
 
     dispatch({
       type: DELETE_COMMENT_SUCCESS,

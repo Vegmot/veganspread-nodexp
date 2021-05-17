@@ -14,6 +14,7 @@ connectDB()
 
 // initiate bodyParser
 app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
 
 // define routes
 // all working 5/3/2021 - only PATCH request has to be sent twice

@@ -28,6 +28,27 @@ const writeComment = asyncHandler(async (req, res) => {
   res.status(201).json(comment)
 })
 
+// get all comments on a post
+// GET /api/comments/:pid
+// public
+const getAllComments = asyncHandler(async (req, res) => {
+  const commentsPerLoad = 10
+  const page = +req.query.page || 1
+
+  const count = await Comment.countDocuments()
+
+  const comments = await Comment.find({ post: req.params.pid })
+    .sort({ createdAt: -1 })
+    .limit(commentsPerLoad)
+    .skip(commentsPerLoad * (page - 1))
+
+  if (!comments) return res.status(404).json({ message: 'Comments not found' })
+
+  return res
+    .status(200)
+    .json({ comments, page, pages: Math.ceil(count / commentsPerLoad) })
+})
+
 // get a comment
 // GET /api/comments/:pid/:cid
 // private
@@ -99,6 +120,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 
 export {
   writeComment,
+  getAllComments,
   getComment,
   getAllMyComments,
   updateComment,
