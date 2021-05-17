@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { displayTimestamp } from '../../../utils/displayTimestamp'
 
-import './EachComment.css'
+import styles from './EachComment.module.css'
 
 const EachComment = ({ comment }) => {
   const [showMore, setShowMore] = useState(false)
@@ -10,10 +10,10 @@ const EachComment = ({ comment }) => {
 
   return (
     <>
-      <div key={comment.commentID} className='each-feed-each-comment'>
+      <div key={comment.commentID} className={styles['each-feed-each-comment']}>
         <p>
           <span>
-            <strong>{comment.userID}</strong>
+            <strong>{comment.displayName}</strong>
           </span>{' '}
           {comment.text && comment.text.length > displayTextLength
             ? showMore
@@ -22,7 +22,7 @@ const EachComment = ({ comment }) => {
             : comment.text + ' '}
           {comment.text && comment.text.length > displayTextLength && (
             <button
-              className='show-remaining-comment-text'
+              className={styles['show-remaining-comment-text']}
               onClick={() => setShowMore(!showMore)}
             >
               <small style={{ color: '#aaa' }}>
@@ -31,6 +31,7 @@ const EachComment = ({ comment }) => {
             </button>
           )}
         </p>
+
         <div className='comment-timestamp'>
           <small style={{ color: '#aaa' }}>
             {displayTimestamp(Date.now(), comment.createdAt)}

@@ -1,7 +1,8 @@
 /* Global */
 
-i.circle.large.disabled.icon {
-  width: 100%;
+.posts-endpoint {
+  width: 4.5vw;
+  height: 5vh;
   margin: 0 auto 5vh auto;
 }
 

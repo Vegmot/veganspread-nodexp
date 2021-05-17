@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import { displayTimestamp } from '../../utils/displayTimestamp'
 
-import './Feed.css'
+import styles from './Feed.module.css'
 
 const Feed = ({ post }) => {
   const [heartName, setHeartName] = useState('heart outline')
@@ -33,16 +33,19 @@ const Feed = ({ post }) => {
 
   return (
     <>
-      <div id='feed' className='feed'>
-        <div className='feed-container'>
-          <div className='feed-header'>
-            <p className='feed-header-poster'>
-              <span className='feed-header-poster-name'>
+      <div id='feed' className={styles['feed']}>
+        <div className={styles['feed-container']}>
+          <div className={styles['feed-header']}>
+            <p className={styles['feed-header-poster']}>
+              <span className={styles['feed-header-poster-name']}>
                 <strong>
                   {post.isAd ? (
                     <span style={{ color: '#01b5ac' }}>Advertisement</span>
                   ) : (
-                    <Link to={`/user/${post.user}`} className='user-details'>
+                    <Link
+                      to={`/user/${post.user}`}
+                      className={styles['user-details']}
+                    >
                       {post.displayName}
                     </Link>
                   )}
@@ -51,18 +54,18 @@ const Feed = ({ post }) => {
             </p>
           </div>
 
-          <div className='feed-content-image'>
+          <div className={styles['feed-content-image']}>
             <Link to={`/feed/${post._id}`}>
               <Image src={post.image} fluid centered alt='Sample image' />
             </Link>
           </div>
 
-          <div className='feed-details'>
+          <div className={styles['feed-details']}>
             {post.isAd ? (
               <>
                 <Icon
                   link
-                  className='feed-details-icon'
+                  className={styles['feed-details-icon']}
                   name='paper plane outline'
                   size='large'
                 />
@@ -71,7 +74,7 @@ const Feed = ({ post }) => {
               <>
                 <Icon
                   link
-                  className='each-feed-details-icon'
+                  className={styles['each-feed-details-icon']}
                   name={heartName}
                   color={heartColour}
                   onClick={heartFillHandler}
@@ -81,7 +84,7 @@ const Feed = ({ post }) => {
                 <Link to={`/feed/${post._id}`}>
                   <Icon
                     link
-                    className='feed-details-icon'
+                    className={styles['feed-details-icon']}
                     name='comment outline'
                     size='large'
                   />
@@ -89,13 +92,13 @@ const Feed = ({ post }) => {
 
                 <Icon
                   link
-                  className='feed-details-icon'
+                  className={styles['feed-details-icon']}
                   name='paper plane outline'
                   size='large'
                 />
                 <Icon
                   link
-                  className='each-feed-details-icon'
+                  className={styles['each-feed-details-icon']}
                   name={bookmarkName}
                   color={bookmarkColour}
                   onClick={bookMarkHandler}
@@ -106,9 +109,9 @@ const Feed = ({ post }) => {
             )}
           </div>
 
-          <div className='feed-content-text'>
+          <div className={styles['feed-content-text']}>
             <p>
-              <span className='feed-content-text-user'>
+              <span className={styles['feed-content-text-user']}>
                 {post.isAd ? (
                   <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
                 ) : (
@@ -121,8 +124,8 @@ const Feed = ({ post }) => {
             </p>
           </div>
 
-          <div className='feed-footer'>
-            <small className='feed-footer-timestamp'>
+          <div className={styles['feed-footer']}>
+            <small className={styles['feed-footer-timestamp']}>
               {post.isAd ? '' : displayTimestamp(Date.now(), post.createdAt)}
             </small>
           </div>

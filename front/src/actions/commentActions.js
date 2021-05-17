@@ -3,6 +3,9 @@ import {
   GET_COMMENTS_REQUEST,
   GET_COMMENTS_SUCCESS,
   GET_COMMENTS_FAIL,
+  GET_TOP_COMMENTS_REQUEST,
+  GET_TOP_COMMENTS_SUCCESS,
+  GET_TOP_COMMENTS_FAIL,
   GET_COMMENT_BY_ID_REQUEST,
   GET_COMMENT_BY_ID_SUCCESS,
   GET_COMMENT_BY_ID_FAIL,
@@ -30,6 +33,27 @@ export const getComments = pid => async dispatch => {
   } catch (error) {
     dispatch({
       type: GET_COMMENTS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getTopThreeComments = pid => async dispatch => {
+  try {
+    dispatch({ type: GET_TOP_COMMENTS_REQUEST })
+
+    const res = await axios.get(`/api/comments/${pid}/top3`)
+
+    dispatch({
+      type: GET_TOP_COMMENTS_SUCCESS,
+      payload: res.data,
+    })
+  } catch (error) {
+    dispatch({
+      type: GET_TOP_COMMENTS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

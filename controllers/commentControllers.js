@@ -46,7 +46,21 @@ const getAllComments = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json({ comments, page, pages: Math.ceil(count / commentsPerLoad) })
+    .json({ comments, count, page, pages: Math.ceil(count / commentsPerLoad) })
+})
+
+// get top 3 comments for each post
+// GET /api/comments/:pid/top3
+// public
+const getTopThreeComments = asyncHandler(async (req, res) => {
+  const limit = 3
+  const topComments = await Comment.find({ post: req.params.pid })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+
+  if (!topComments) return done(res, 404, 'Comments not found')
+
+  return res.status(200).json(topComments)
 })
 
 // get a comment
@@ -121,6 +135,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 export {
   writeComment,
   getAllComments,
+  getTopThreeComments,
   getComment,
   getAllMyComments,
   updateComment,

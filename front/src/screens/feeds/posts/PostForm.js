@@ -7,7 +7,7 @@ import MyTextArea from '../../../components/form/MyTextInput'
 import { writePost } from '../../../actions/postActions'
 import LoginForm from '../../auth/LoginForm'
 
-import './PostForm.css'
+import styles from './PostForm.module.css'
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -16,7 +16,7 @@ const PostForm = () => {
 
   return (
     <>
-      <div class='create-form-container'>
+      <div className={styles['create-form-container']}>
         <Container text>
           {userData ? (
             <>

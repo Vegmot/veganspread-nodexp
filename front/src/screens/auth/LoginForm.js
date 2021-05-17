@@ -39,15 +39,6 @@ const LoginForm = () => {
               type='password'
             />
 
-            {errors && (
-              <Label
-                basic
-                color='red'
-                style={{ marginBottom: '10' }}
-                content={errors && JSON.stringify(errors)}
-              />
-            )}
-
             <Button
               loading={isSubmitting}
               disabled={!isValid || !dirty || isSubmitting}

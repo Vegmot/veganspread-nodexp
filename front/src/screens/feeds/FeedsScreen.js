@@ -6,7 +6,7 @@ import { openModal } from '../../components/modals/modalReducer'
 import ChangeFeedView from '../../components/layout/ChangeFeedView'
 import { usePublicPostsInfiniteScroll } from '../../utils/useInfiniteScroll'
 
-import './FeedsScreen.css'
+import styles from './FeedsScreen.module.css'
 import { Icon, Loader } from 'semantic-ui-react'
 
 const FeedsScreen = () => {
@@ -67,28 +67,28 @@ const FeedsScreen = () => {
             listViewHandler={listViewHandler}
           />
 
-          <section id='feeds-screen' className='feeds-screen'>
-            {posts.length !== 0
-              ? posts
-                  .sort((a, b) => {
-                    return b.createdAt - a.createdAt
-                  })
-                  .map((post, index) => {
-                    if (posts.length === index + 1) {
-                      return (
-                        <div ref={lastPostRef} key={post._id}>
-                          <Feed post={post} />
-                        </div>
-                      )
-                    } else {
-                      return (
-                        <div key={post._id}>
-                          <Feed post={post} />
-                        </div>
-                      )
-                    }
-                  })
-              : 'There is no post'}
+          <section id='feeds-screen' className={styles['feeds-screen']}>
+            {posts.length !== 0 &&
+              posts
+                .sort((a, b) => {
+                  return b.createdAt - a.createdAt
+                })
+                .map((post, index) => {
+                  if (posts.length === index + 1) {
+                    return (
+                      <div ref={lastPostRef} key={post._id}>
+                        <Feed post={post} />
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div key={post._id}>
+                        <Feed post={post} />
+                      </div>
+                    )
+                  }
+                })}
+            {posts.length === 0 && !loadingPosts && <p>There is no post</p>}
           </section>
         </>
       ) : (
@@ -100,37 +100,47 @@ const FeedsScreen = () => {
             listViewHandler={listViewHandler}
           />
 
-          <section id='feeds-screen' className='feeds-screen'>
-            {loadingPosts && <Loader active size='big' inline='centered' />}
-            {posts.length !== 0
-              ? posts
-                  .sort((a, b) => {
-                    return b.createdAt - a.createdAt
-                  })
-                  .map((post, index) => {
-                    if (posts.length === index + 1) {
-                      return (
-                        <div ref={lastPostRef} key={post._id}>
-                          <FeedCompact post={post} />
-                        </div>
-                      )
-                    } else {
-                      return (
-                        <div key={post._id}>
-                          <FeedCompact post={post} />
-                        </div>
-                      )
-                    }
-                  })
-              : 'There is no post'}
+          <section id='feeds-screen' className={styles['feeds-screen']}>
+            {posts.length !== 0 &&
+              posts
+                .sort((a, b) => {
+                  return b.createdAt - a.createdAt
+                })
+                .map((post, index) => {
+                  if (posts.length === index + 1) {
+                    return (
+                      <div ref={lastPostRef} key={post._id}>
+                        <FeedCompact post={post} />
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div key={post._id}>
+                        <FeedCompact post={post} />
+                      </div>
+                    )
+                  }
+                })}
+            {posts.length === 0 && !loadingPosts && <p>There is no post</p>}
           </section>
         </>
       )}
 
-      {loadingPosts && <Loader active size='big' inline='centered' />}
+      {loadingPosts && (
+        <Loader
+          active
+          size='big'
+          inline='centered'
+          style={{ marginTop: '36vh' }}
+        />
+      )}
       {errorPosts && 'There was an error'}
 
-      {!hasMore && <Icon name='circle' size='large' disabled />}
+      {!hasMore && !loadingPosts && (
+        <div className={styles['posts-endpoint']}>
+          {!hasMore && <Icon name='circle' size='large' disabled />}
+        </div>
+      )}
     </>
   )
 }

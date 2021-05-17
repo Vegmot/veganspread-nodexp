@@ -1,53 +1,9 @@
 /* Global */
-.each-feed-comments-container .split-line {
-  position: absolute;
-  border-bottom: 1px dotted #aaa;
-  width: 80%;
-  left: 35px;
-  bottom: 55px;
-}
 
-/* Media queries for mobile device view */
+/* mobile */
 @media (max-width: 500px) {
-  #each-feed-screen.each-feed-screen {
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    border: 1px solid #aaa;
-    background-color: #fff;
-    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
-    margin-top: 2% 0;
-  }
-
-  .each-feed-comments-container {
-    border: 1px solid #ddd;
-    margin: 1%;
-    padding: 1%;
-  }
-
-  .each-feed-container .each-feed-details,
-  .each-feed-container .each-feed-content-text {
-    padding: 2%;
-  }
-
-  .each-feed-timestamp {
-    padding-left: 2%;
-  }
-
-  .each-feed-details .each-feed-details-icon {
-    margin: 0 1%;
-  }
-
-  .each-feed-details .each-feed-details-icon:first-child {
-    margin-left: 0;
-  }
-
-  .each-feed-details .each-feed-details-icon:last-child {
-    margin-right: 0;
-  }
-
   .each-feed-each-comment {
-    margin: 2% auto;
+    margin: 1% auto;
   }
 
   .each-feed-each-comment p {
@@ -76,15 +32,13 @@
 
   .comment-input-area {
     border: 1px solid #aaa;
-    right: 10px;
-    bottom: 10px;
+
     width: 95%;
-    margin: 0 auto;
+    margin: 0 auto 2% auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     border-radius: 30px;
-    position: absolute;
   }
 
   .comment-input-area input {
@@ -118,48 +72,8 @@
   }
 }
 
-/* Media queries for desktop view */
+/* Desktop */
 @media (min-width: 501px) {
-  #each-feed-screen.each-feed-screen {
-    width: 100%;
-    height: 70vh;
-    max-width: 70%;
-    max-height: 70vh;
-    background-color: #fff;
-    border: 1px solid #f7f7f7;
-    border-radius: 5px;
-    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
-    margin: 2% auto;
-    display: flex;
-    flex-direction: row;
-  }
-
-  .each-feed-container .each-feed-details,
-  .each-feed-container .each-feed-content-text {
-    padding: 2%;
-  }
-
-  .each-feed-container .each-feed-timestamp {
-    padding-left: 2%;
-  }
-
-  .each-feed-details .each-feed-details-icon {
-    margin: 0 1%;
-  }
-
-  .each-feed-details .each-feed-details-icon:first-child {
-    margin-left: 0;
-  }
-
-  .each-feed-details .each-feed-details-icon:last-child {
-    margin-right: 0;
-  }
-
-  .each-feed-contents-area,
-  .each-feed-comments-container {
-    flex: 5;
-  }
-
   .each-feed-comments-container {
     padding: 2%;
     border-left: 1px dotted #aaa;
@@ -174,7 +88,7 @@
   }
 
   .each-feed-each-comment {
-    margin: 2% auto;
+    margin: 1% auto;
   }
 
   .each-feed-each-comment p {

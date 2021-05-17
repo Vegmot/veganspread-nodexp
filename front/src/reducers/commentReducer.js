@@ -2,6 +2,9 @@ import {
   GET_COMMENTS_REQUEST,
   GET_COMMENTS_SUCCESS,
   GET_COMMENTS_FAIL,
+  GET_TOP_COMMENTS_REQUEST,
+  GET_TOP_COMMENTS_SUCCESS,
+  GET_TOP_COMMENTS_FAIL,
   GET_COMMENT_BY_ID_REQUEST,
   GET_COMMENT_BY_ID_SUCCESS,
   GET_COMMENT_BY_ID_FAIL,
@@ -20,6 +23,8 @@ const initialState = {
   loading: false,
   comment: null,
   comments: [],
+  topComments: [],
+  count: 0,
   error: null,
   success: false,
 }
@@ -31,6 +36,19 @@ export const getCommentsReducer = (state = initialState, action) => {
     case GET_COMMENTS_SUCCESS:
       return { ...state, comments: action.payload }
     case GET_COMMENTS_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const getTopCommentsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_TOP_COMMENTS_REQUEST:
+      return { ...state, loading: true, topComments: [] }
+    case GET_TOP_COMMENTS_SUCCESS:
+      return { ...state, loading: false, topComments: action.payload }
+    case GET_TOP_COMMENTS_FAIL:
       return { ...state, loading: false, error: action.payload }
     default:
       return state

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Icon, Image } from 'semantic-ui-react'
 import { displayTimestamp } from '../../utils/displayTimestamp'
 
-import './FeedCompact.css'
+import styles from './FeedCompact.module.css'
 
 const FeedCompact = ({ post }) => {
   const [heartName, setHeartName] = useState('heart outline')
@@ -33,10 +33,13 @@ const FeedCompact = ({ post }) => {
 
   return (
     <>
-      <section id='feed-compact-screen' className='feed-compact-screen'>
-        <div id='feed-compact' className='feed-compact'>
-          <div className='feed-compact-container'>
-            <div className='feed-compact-image'>
+      <section
+        id='feed-compact-screen'
+        className={styles['feed-compact-screen']}
+      >
+        <div id='feed-compact' className={styles['feed-compact']}>
+          <div className={styles['feed-compact-container']}>
+            <div className={styles['feed-compact-image']}>
               <Link to={`/feed?/${post._id}`}>
                 <Image
                   src={post.image}
@@ -46,8 +49,8 @@ const FeedCompact = ({ post }) => {
               </Link>
             </div>
 
-            <div className='feed-compact-content'>
-              <div className='feed-compact-poster'>
+            <div className={styles['feed-compact-content']}>
+              <div className={styles['feed-compact-poster']}>
                 <strong>
                   {post.isAd ? (
                     <span style={{ color: '#01b5ac' }}>Advertisement</span>
@@ -57,9 +60,9 @@ const FeedCompact = ({ post }) => {
                 </strong>
               </div>
 
-              <div className='feed-compact-text'>
+              <div className={styles['feed-compact-text']}>
                 <p>
-                  <span className='feed-content-text-user'>
+                  <span className={styles['feed-content-text-user']}>
                     {post.isAd ? (
                       <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
                     ) : (
@@ -72,18 +75,18 @@ const FeedCompact = ({ post }) => {
                 </p>
               </div>
 
-              <div className='feed-compact-footer'>
+              <div className={styles['feed-compact-footer']}>
                 <small>{displayTimestamp(Date.now(), post.createdAt)}</small>
               </div>
 
-              <div className='split-line'></div>
+              <div className={styles['split-line']}></div>
 
-              <div className='feed-compact-details'>
+              <div className={styles['feed-compact-details']}>
                 {post.isAd ? (
                   <>
                     <Icon
                       link
-                      className='feed-details-icon'
+                      className={styles['feed-details-icon']}
                       name='paper plane outline'
                       size='large'
                     />
@@ -92,7 +95,7 @@ const FeedCompact = ({ post }) => {
                   <>
                     <Icon
                       link
-                      className='feed-details-icon'
+                      className={styles['feed-details-icon']}
                       name={heartName}
                       color={heartColour}
                       onClick={heartFillHandler}
@@ -100,19 +103,19 @@ const FeedCompact = ({ post }) => {
                     />
                     <Icon
                       link
-                      className='feed-details-icon'
+                      className={styles['feed-details-icon']}
                       name='comment outline'
                       size='large'
                     />
                     <Icon
                       link
-                      className='feed-details-icon'
+                      className={styles['feed-details-icon']}
                       name='paper plane outline'
                       size='large'
                     />
                     <Icon
                       link
-                      className='each-feed-details-icon'
+                      className={styles['each-feed-details-icon']}
                       name={bookmarkName}
                       color={bookmarkColour}
                       onClick={bookMarkHandler}

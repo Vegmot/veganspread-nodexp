@@ -17,6 +17,7 @@ import {
 } from '../reducers/userReducer'
 import {
   getCommentsReducer,
+  getTopCommentsReducer,
   getCommentByIdReducer,
   writeCommentReducer,
   updateCommentReducer,
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
 
   // comments
   getComments: getCommentsReducer,
+  getTopComments: getTopCommentsReducer,
   getCommentById: getCommentByIdReducer,
   writeComment: writeCommentReducer,
   updateComment: updateCommentReducer,

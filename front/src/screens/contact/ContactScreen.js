@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Grid, Form, Button, Image, Divider } from 'semantic-ui-react'
 
-import './ContactScreen.css'
+import styles from './ContactScreen.module.css'
 
 const ContactScreen = () => {
   const [firstName, setFirstName] = useState('')
@@ -35,10 +35,10 @@ const ContactScreen = () => {
 
   return (
     <>
-      <section id='contact-screen' className='contact-screen'>
+      <section id='contact-screen' className={styles['contact-screen']}>
         <Image src='/assets/contact_us_03.jpg' size='big' rounded />
 
-        <div className='contact-top-area'>
+        <div className={styles['contact-top-area']}>
           <h2>Running all the time</h2>
           <p>
             Reach out to us anytime you want, as our customer service center is
@@ -46,7 +46,7 @@ const ContactScreen = () => {
           </p>
         </div>
 
-        <div className='contact-info-area-phone'>
+        <div className={styles['contact-info-area-phone']}>
           <h2>Talk to us directly</h2>
           <Image src='/assets/contact_us_02.jpg' size='big' rounded />
           <p>
@@ -75,7 +75,7 @@ const ContactScreen = () => {
 
         <Divider horizontal>Or</Divider>
 
-        <div className='contact-info-area-msg'>
+        <div className={styles['contact-info-area-msg']}>
           <h2>Send us a message</h2>
           <Image src='/assets/contact_us_01.jpg' size='big' rounded />
         </div>
@@ -84,7 +84,7 @@ const ContactScreen = () => {
           <Grid.Row columns={2}>
             <Grid.Column width={8}>
               <Form
-                className='ui form contact-input-area'
+                className={styles['ui form contact-input-area']}
                 onSubmit={handleOnSubmit}
               >
                 <Form.Field>
@@ -138,7 +138,7 @@ const ContactScreen = () => {
             </Grid.Column>
 
             <Grid.Column width={8}>
-              <div className='contact-display-area'>
+              <div className={styles['contact-display-area']}>
                 <p>
                   <span>Entered first name</span>: {displayFirstName}
                 </p>
