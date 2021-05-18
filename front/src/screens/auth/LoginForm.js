@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ModalWrapper from '../../components/modals/ModalWrapper'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -10,6 +10,10 @@ import { login } from '../../actions/userActions'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
+  const loginUser = useSelector(state => state.loginUser)
+  const { userData } = loginUser
+
+  const [loginError, setLoginError] = useState('')
 
   return (
     <ModalWrapper size='mini' header='Sign in'>
@@ -23,7 +27,12 @@ const LoginForm = () => {
           try {
             dispatch(login(values.email, values.password))
             setSubmitting(false)
-            dispatch(closeModal())
+            if (!userData) {
+              setLoginError('Invalid email or password')
+            } else {
+              setLoginError('')
+              dispatch(closeModal())
+            }
           } catch (error) {
             setErrors({ errors: error.message })
             setSubmitting(false)
@@ -38,6 +47,15 @@ const LoginForm = () => {
               placeholder='Password'
               type='password'
             />
+
+            {loginError !== '' && (
+              <Label
+                basic
+                color='red'
+                style={{ marginBottom: '10' }}
+                content={loginError}
+              />
+            )}
 
             <Button
               loading={isSubmitting}

@@ -24,7 +24,7 @@ const initialState = {
 export const loginUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_USER_REQUEST:
-      return { ...state, loading: true, userData: {} }
+      return { ...state, loading: true }
     case LOG_IN_USER_SUCCESS:
       return {
         ...state,

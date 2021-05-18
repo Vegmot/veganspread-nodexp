@@ -36,6 +36,7 @@ const Feed = ({ post }) => {
       <div id='feed' className={styles['feed']}>
         <div className={styles['feed-container']}>
           <div className={styles['feed-header']}>
+            <Image src={post.avatar} circular size='mini' />
             <p className={styles['feed-header-poster']}>
               <span className={styles['feed-header-poster-name']}>
                 <strong>

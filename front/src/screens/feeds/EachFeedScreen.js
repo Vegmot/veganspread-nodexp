@@ -74,9 +74,9 @@ const EachFeedScreen = ({ history, match }) => {
         onClick={history.goBack}
         style={{
           background: 'transparent',
-          padding: '3%',
-          marginTop: '3%',
-          fontSize: '1.3rem',
+          padding: '2.5%',
+          marginTop: '2.5%',
+          fontSize: '1.25rem',
         }}
       />
 
@@ -143,6 +143,7 @@ const EachFeedScreen = ({ history, match }) => {
             </div>
 
             <div className={styles['each-feed-content-text']}>
+              <Image src={post.avatar} circular size='mini' />
               <p>
                 <span className={styles['each-feed-content-text-user']}>
                   {post.isAd ? (

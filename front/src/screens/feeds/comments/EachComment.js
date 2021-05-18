@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { displayTimestamp } from '../../../utils/displayTimestamp'
+import { Image } from 'semantic-ui-react'
 
 import styles from './EachComment.module.css'
 
@@ -11,6 +12,8 @@ const EachComment = ({ comment }) => {
   return (
     <>
       <div key={comment.commentID} className={styles['each-feed-each-comment']}>
+        <Image src={comment.avatar} circular size='mini' />
+
         <p>
           <span>
             <strong>{comment.displayName}</strong>
@@ -31,12 +34,12 @@ const EachComment = ({ comment }) => {
             </button>
           )}
         </p>
+      </div>
 
-        <div className='comment-timestamp'>
-          <small style={{ color: '#aaa' }}>
-            {displayTimestamp(Date.now(), comment.createdAt)}
-          </small>
-        </div>
+      <div className={styles['comment-timestamp']}>
+        <small style={{ color: '#aaa' }}>
+          {displayTimestamp(Date.now(), comment.createdAt)}
+        </small>
       </div>
     </>
   )

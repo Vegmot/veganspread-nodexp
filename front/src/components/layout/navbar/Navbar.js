@@ -29,10 +29,6 @@ const Navbar = () => {
             />
           </Menu.Item>
 
-          <Menu.Item as={NavLink} to='/news' name='News' />
-
-          <Menu.Item as={NavLink} to='/sandbox' name='Sandbox' />
-
           {userData ? <SignedInMenu /> : <SignedOutMenu />}
         </Container>
       </Menu>

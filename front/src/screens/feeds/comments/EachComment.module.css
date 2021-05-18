@@ -1,10 +1,20 @@
 /* Global */
 .each-feed-each-comment {
-  margin-bottom: 1vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.each-feed-each-comment image,
+.each-feed-each-comment p span {
+  margin-left: 0.5%;
+  margin-right: 0.5%;
 }
 
 .each-feed-each-comment p {
   margin: 0;
+  width: 100%;
 }
 
 .show-remaining-comment-text {
@@ -12,6 +22,10 @@
   border: 0;
   outline: 0;
   cursor: pointer;
+}
+
+.comment-timestamp {
+  margin-bottom: 1vh;
 }
 
 /* Mobile */
