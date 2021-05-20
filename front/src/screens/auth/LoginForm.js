@@ -3,7 +3,7 @@ import ModalWrapper from '../../components/modals/ModalWrapper'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import MyTextInput from '../../components/form/MyTextInput'
-import { Button, Divider, Label } from 'semantic-ui-react'
+import { Button, Label } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../components/modals/modalReducer'
 import { login } from '../../actions/userActions'
@@ -28,22 +28,22 @@ const LoginForm = () => {
           try {
             dispatch(login(values.email, values.password))
 
-            if (!errorMsg && userData) {
+            if (errorMsg || !userData) {
               setSubmitting(false)
-              dispatch(closeModal())
+              setLoginError(errorMsg)
+              console.log('Logging inside else statement: ', errorMsg)
             } else {
               setSubmitting(false)
-              values.email = ''
-              values.password = ''
-              setLoginError('Incorrect email or password')
+              dispatch(closeModal())
             }
           } catch (error) {
             setErrors({ errors: error.message })
             setSubmitting(false)
+            console.log('Logging inside catch')
           }
         }}
       >
-        {({ isSubmitting, isValid, dirty, handleChange }) => (
+        {({ isSubmitting, isValid, dirty, handleChange, handleBlur }) => (
           <Form className='ui form'>
             <MyTextInput
               name='email'
@@ -52,6 +52,7 @@ const LoginForm = () => {
                 setChanged(true)
                 handleChange(e)
               }}
+              onBlur={handleBlur}
             />
             <MyTextInput
               name='password'
@@ -61,14 +62,15 @@ const LoginForm = () => {
                 setChanged(true)
                 handleChange(e)
               }}
+              onBlur={handleBlur}
             />
 
-            {!changed && errorMsg && (
+            {!changed && loginError && (
               <Label
                 basic
                 color='red'
                 style={{ marginBottom: '10px' }}
-                content='Incorrect email or password'
+                content={loginError}
               />
             )}
 

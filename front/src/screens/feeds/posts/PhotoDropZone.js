@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Header, Icon } from 'semantic-ui-react'
+import { Header, Icon, Input } from 'semantic-ui-react'
 
-const PhotoDropZone = ({ setFiles }) => {
+const PhotoDropZone = ({ setFiles, image, setImage }) => {
   const dropzoneStyles = {
     border: 'dashed 3px #eee',
     borderRadius: '5%',
@@ -43,9 +43,16 @@ const PhotoDropZone = ({ setFiles }) => {
         }
       >
         <input {...getInputProps()} />
+
         <Icon name='upload' size='huge' />
-        <Header content='Drop image here' />
+        <Header content='Click to upload image' />
       </div>
+      <Input
+        type='text'
+        placeholder='Image URL'
+        value={image}
+        onChange={e => setImage(e.target.value)}
+      />
     </>
   )
 }

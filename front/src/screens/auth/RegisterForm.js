@@ -64,7 +64,7 @@ const RegisterForm = () => {
             }
           }}
         >
-          {({ isSubmitting, isValid, dirty, errors }) => (
+          {({ isSubmitting, isValid, dirty }) => (
             <Form className='ui form'>
               <MyTextInput name='firstName' placeholder='First name' />
               <MyTextInput name='lastName' placeholder='Last name' />

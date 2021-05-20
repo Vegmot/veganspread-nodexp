@@ -2,14 +2,15 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import { Formik, Form } from 'formik'
-import { Checkbox, Button, Container, TextArea } from 'semantic-ui-react'
+import { Checkbox, Button, Container, TextArea, Label } from 'semantic-ui-react'
 import MyTextArea from '../../../components/form/MyTextInput'
 import { writePost } from '../../../actions/postActions'
 import LoginForm from '../../auth/LoginForm'
 import ModalWrapper from '../../../components/modals/ModalWrapper'
+import PhotoUploadForm from './PhotoUploadForm'
+import Thumbnail from './Thumbnail'
 
 import styles from './PostForm.module.css'
-import PhotoUploadForm from './PhotoUploadForm'
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -47,14 +48,19 @@ const PostForm = () => {
                   initialValues={{
                     image: '',
                     text: '',
+                    isPrivate: false,
                   }}
                   validationSchema={Yup.object({
                     image: Yup.string().required('Please upload an image'),
                     text: Yup.string().required('Please enter text'),
+                    isPrivate: Yup.boolean(),
                   })}
                   onSubmit={(values, { setSubmitting }) => {
+                    console.log(values)
                     try {
-                      dispatch(writePost(values.image, values.text))
+                      dispatch(
+                        writePost(values.image, values.text, values.isPrivate)
+                      )
                       setSubmitting(false)
                     } catch (error) {
                       setSubmitting(false)
@@ -62,11 +68,26 @@ const PostForm = () => {
                     }
                   }}
                 >
-                  {({ isSubmitting, isValid, dirty }) => (
+                  {({ isSubmitting, isValid, setFieldValue, values }) => (
                     <>
-                      <PhotoUploadForm style={photoUploadFormStyle} />
-
                       <Form className='ui form'>
+                        <Label content='Upload an image' icon='photo' />
+                        <input
+                          id='file'
+                          name='file'
+                          type='file'
+                          onChange={e => {
+                            setFieldValue('file', e.currentTarget.files[0])
+                            console.log(
+                              'e.currentTarget.files[0]: ',
+                              e.currentTarget.files[0]
+                            )
+                          }}
+                          className={styles['form-control']}
+                        />
+
+                        <Thumbnail file={values.file} />
+
                         <div className={styles['post-area-container']}>
                           <TextArea
                             name='text'
@@ -80,6 +101,7 @@ const PostForm = () => {
 
                           <Checkbox
                             toggle
+                            name='isPrivate'
                             label='Make this post private'
                             className={styles['post-privacy-area']}
                             style={checkboxStyle}
@@ -87,7 +109,7 @@ const PostForm = () => {
 
                           <Button
                             loading={isSubmitting}
-                            disabled={!isValid || !dirty || isSubmitting}
+                            disabled={isSubmitting}
                             type='submit'
                             fluid
                             size='large'

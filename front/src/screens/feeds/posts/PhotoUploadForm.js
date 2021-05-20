@@ -30,6 +30,8 @@ const PhotoUploadForm = ({ setEditMode }) => {
 
       setImage(res.data)
       setUploading(false)
+      console.log('files: ', files)
+      console.log('image: ', image)
     } catch (error) {
       console.error(error)
       setUploading(false)
@@ -43,7 +45,33 @@ const PhotoUploadForm = ({ setEditMode }) => {
 
   return (
     <>
-      <PhotoDropZone setFiles={setFiles} />
+      <PhotoDropZone
+        value={image}
+        image={image}
+        setImage={setImage}
+        setFiles={setFiles}
+        onChange={uploadImageHandler}
+      />
+
+      <div
+        className='img-preview'
+        style={{ minHeight: 200, minWidth: 200, overflow: 'hidden' }}
+      />
+      <Button.Group>
+        <Button
+          loading={loading}
+          onClick={uploadImageHandler}
+          style={{ width: 100 }}
+          positive
+          icon='check'
+        />
+        <Button
+          disabled={loading}
+          onClick={cancelCropHandler}
+          style={{ width: 100 }}
+          icon='close'
+        />
+      </Button.Group>
     </>
   )
 }

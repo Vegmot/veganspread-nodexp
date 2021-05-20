@@ -93,37 +93,43 @@ export const fetchPostById = pid => async dispatch => {
   }
 }
 
-export const writePost = (image, text) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: WRITE_POST_REQUEST })
+export const writePost =
+  (image, text, isPrivate = false) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: WRITE_POST_REQUEST })
 
-    const {
-      loginUser: { userData },
-    } = getState()
+      const {
+        loginUser: { userData },
+      } = getState()
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-        'Content-Type': 'application/json',
-      },
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const res = await axios.post(
+        '/api/posts/',
+        { image, text, isPrivate },
+        config
+      )
+
+      dispatch({
+        type: WRITE_POST_SUCCESS,
+        payload: res.data,
+      })
+    } catch (error) {
+      dispatch({
+        type: WRITE_POST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-
-    const res = await axios.post('/api/posts/', { image, text }, config)
-
-    dispatch({
-      type: WRITE_POST_SUCCESS,
-      payload: res.data,
-    })
-  } catch (error) {
-    dispatch({
-      type: WRITE_POST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
 export const updatePost = post => async (dispatch, getState) => {
   try {
