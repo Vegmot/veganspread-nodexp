@@ -1,6 +1,14 @@
+/* Global */
+.post-area-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile */
 @media (max-width: 500px) {
 }
 
+/* Desktop */
 @media (min-width: 501px) {
   .create-form-container {
     height: 100%;

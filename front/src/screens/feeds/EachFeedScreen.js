@@ -162,7 +162,11 @@ const EachFeedScreen = ({ history, match }) => {
 
         <div className={styles['top-comments']}>
           {topComments && topComments.length > 0 ? (
-            topComments.map(comment => <EachComment comment={comment} />)
+            topComments.map(comment => (
+              <>
+                <EachComment comment={comment} />
+              </>
+            ))
           ) : (
             <div
               className={styles['no-comments']}
@@ -172,8 +176,15 @@ const EachFeedScreen = ({ history, match }) => {
               <p>No comments yet</p>
             </div>
           )}
+
+          {topComments && topComments.length > 0 && (
+            <Link to={`/feed/${post._id}/comments`} style={{ color: 'teal' }}>
+              <small>Load more comments...</small>
+            </Link>
+          )}
         </div>
       </section>
+      <div className={styles['space-below-each-feed']}></div>
     </>
   )
 }

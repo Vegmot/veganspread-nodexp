@@ -7,9 +7,6 @@ import FeedsScreen from './screens/feeds/FeedsScreen'
 import EachFeedScreen from './screens/feeds/EachFeedScreen'
 import CommentsScreen from './screens/feeds/comments/CommentsScreen'
 import UserDetailsScreen from './screens/users/UserDetailScreen'
-import PostForm from './screens/feeds/posts/PostForm'
-
-import SandBox from './screens/sandbox/SandBox'
 
 const App = () => {
   return (
@@ -20,8 +17,7 @@ const App = () => {
         <Route exact path='/user/:id' component={UserDetailsScreen} />
         <Route exact path='feed/:id/comments' component={CommentsScreen} />
         <Route exact path='/feed/:id' component={EachFeedScreen} />
-        <Route exact path='/create' component={PostForm} />
-        <Route exact path='/:pageNumber?' component={FeedsScreen} />
+        <Route exact path='/' component={FeedsScreen} />
         <Route component={NotFound} />
       </Switch>
     </>

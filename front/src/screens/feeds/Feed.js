@@ -82,7 +82,7 @@ const Feed = ({ post }) => {
                   size='large'
                 />
 
-                <Link to={`/feed/${post._id}`}>
+                <Link to={`/feed/${post._id}/comments`}>
                   <Icon
                     link
                     className={styles['feed-details-icon']}

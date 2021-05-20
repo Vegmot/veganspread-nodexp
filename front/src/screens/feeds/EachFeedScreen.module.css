@@ -99,4 +99,8 @@
   .each-feed-details .each-feed-details-icon:last-child {
     margin-right: 0;
   }
+
+  .space-below-each-feed {
+    padding-top: 10vh;
+  }
 }

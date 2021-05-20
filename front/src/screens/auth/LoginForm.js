@@ -11,9 +11,10 @@ import { login } from '../../actions/userActions'
 const LoginForm = () => {
   const dispatch = useDispatch()
   const loginUser = useSelector(state => state.loginUser)
-  const { userData } = loginUser
+  const { loading, userData, error: errorMsg } = loginUser
 
   const [loginError, setLoginError] = useState('')
+  const [changed, setChanged] = useState(false)
 
   return (
     <ModalWrapper size='mini' header='Sign in'>
@@ -26,12 +27,15 @@ const LoginForm = () => {
         onSubmit={(values, { setSubmitting, setErrors }) => {
           try {
             dispatch(login(values.email, values.password))
-            setSubmitting(false)
-            if (!userData) {
-              setLoginError('Invalid email or password')
-            } else {
-              setLoginError('')
+
+            if (!errorMsg && userData) {
+              setSubmitting(false)
               dispatch(closeModal())
+            } else {
+              setSubmitting(false)
+              values.email = ''
+              values.password = ''
+              setLoginError('Incorrect email or password')
             }
           } catch (error) {
             setErrors({ errors: error.message })
@@ -39,27 +43,38 @@ const LoginForm = () => {
           }
         }}
       >
-        {({ isSubmitting, isValid, dirty, errors }) => (
+        {({ isSubmitting, isValid, dirty, handleChange }) => (
           <Form className='ui form'>
-            <MyTextInput name='email' placeholder='Email address' />
+            <MyTextInput
+              name='email'
+              placeholder='Email address'
+              onChange={e => {
+                setChanged(true)
+                handleChange(e)
+              }}
+            />
             <MyTextInput
               name='password'
               placeholder='Password'
               type='password'
+              onChange={e => {
+                setChanged(true)
+                handleChange(e)
+              }}
             />
 
-            {loginError !== '' && (
+            {!changed && errorMsg && (
               <Label
                 basic
                 color='red'
-                style={{ marginBottom: '10' }}
-                content={loginError}
+                style={{ marginBottom: '10px' }}
+                content='Incorrect email or password'
               />
             )}
 
             <Button
-              loading={isSubmitting}
-              disabled={!isValid || !dirty || isSubmitting}
+              loading={isSubmitting || loading}
+              disabled={!isValid || !dirty || isSubmitting || !changed}
               type='submit'
               fluid
               size='large'

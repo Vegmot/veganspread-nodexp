@@ -1,13 +1,14 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Feed from './Feed'
 import FeedCompact from './FeedCompact'
 import { useSelector } from 'react-redux'
 import { openModal } from '../../components/modals/modalReducer'
 import ChangeFeedView from '../../components/layout/ChangeFeedView'
 import { usePublicPostsInfiniteScroll } from '../../utils/useInfiniteScroll'
+import { Icon, Loader } from 'semantic-ui-react'
+import CreatePostButton from '../../components/layout/CreatePostButton'
 
 import styles from './FeedsScreen.module.css'
-import { Icon, Loader } from 'semantic-ui-react'
 
 const FeedsScreen = () => {
   const [cardActiveColour, setCardActiveColour] = useState('teal')
@@ -56,8 +57,28 @@ const FeedsScreen = () => {
     }
   }
 
+  const savePreviousScrollPosition = e => {
+    sessionStorage.setItem('scrollPosition', window.pageYOffset)
+    // save pageNumber too and make a condition when making GET request with the save parameter
+    // check if there is any saved parameter and if there is, use it / else, just keep doing what it's been doing
+  }
+
+  const getScrollPositionFromSessionStorage = () => {
+    const scrollPosition = sessionStorage.getItem('scrollPosition')
+    const parsedPosition = parseInt(scrollPosition)
+
+    if (typeof parsedPosition === 'number') {
+      window.scrollTo(0, parsedPosition)
+      setTimeout(() => {
+        return sessionStorage.removeItem('scrollPosition')
+      }, 1000)
+    }
+  }
+
   return (
     <>
+      <CreatePostButton className={styles['create-button']} />
+
       {cardActiveColour === 'teal' ? (
         <>
           <ChangeFeedView

@@ -1,5 +1,4 @@
 /* Global */
-
 .posts-endpoint {
   width: 4.5vw;
   height: 5vh;
@@ -12,8 +11,8 @@
 
 /* Media queries for mobile devices */
 @media (max-width: 500px) {
-  #feeds-screen {
-    width: 100%;
+  .feeds-screen {
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,8 +34,4 @@
 
 /* Media queries for devices larger than mobile phones */
 @media (min-width: 501px) {
-  #feeds-screen {
-    padding-left: 10vw;
-    padding-right: 10vw;
-  }
 }
