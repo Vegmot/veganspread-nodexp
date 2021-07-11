@@ -29,6 +29,26 @@ const Navbar = () => {
             />
           </Menu.Item>
 
+          <Menu.Item
+            as={NavLink}
+            exact
+            to='/'
+            header
+            style={{ background: 'transparent' }}
+          >
+            Feed
+          </Menu.Item>
+
+          <Menu.Item
+            as={NavLink}
+            exact
+            to='/chat'
+            header
+            style={{ background: 'transparent' }}
+          >
+            Chat
+          </Menu.Item>
+
           {userData ? <SignedInMenu /> : <SignedOutMenu />}
         </Container>
       </Menu>
