@@ -1,139 +1,124 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Icon, Image } from 'semantic-ui-react'
-import { displayTimestamp } from '../../utils/displayTimestamp'
-
-import styles from './Feed.module.css'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Icon, Image } from 'semantic-ui-react';
+import { displayTimestamp } from '../../utils/displayTimestamp';
 
 const Feed = ({ post }) => {
-  const [heartName, setHeartName] = useState('heart outline')
-  const [heartColour, setHeartColour] = useState('black')
-  const [bookmarkName, setBookmarkName] = useState('bookmark outline')
-  const [bookmarkColour, setBookmarkColour] = useState('black')
+  const [heartName, setHeartName] = useState('heart outline');
+  const [heartColour, setHeartColour] = useState('black');
+  const [bookmarkName, setBookmarkName] = useState('bookmark outline');
+  const [bookmarkColour, setBookmarkColour] = useState('black');
 
   const heartFillHandler = () => {
     if (heartName === 'heart outline' && heartColour === 'black') {
-      setHeartName('heart')
-      setHeartColour('red')
+      setHeartName('heart');
+      setHeartColour('red');
     } else {
-      setHeartName('heart outline')
-      setHeartColour('black')
+      setHeartName('heart outline');
+      setHeartColour('black');
     }
-  }
+  };
 
   const bookMarkHandler = () => {
     if (bookmarkName === 'bookmark outline' && bookmarkColour === 'black') {
-      setBookmarkName('bookmark')
-      setBookmarkColour('teal')
+      setBookmarkName('bookmark');
+      setBookmarkColour('teal');
     } else {
-      setBookmarkName('bookmark outline')
-      setBookmarkColour('black')
+      setBookmarkName('bookmark outline');
+      setBookmarkColour('black');
     }
-  }
+  };
 
   return (
     <>
-      <div id='feed' className={styles['feed']}>
-        <div className={styles['feed-container']}>
-          <div className={styles['feed-header']}>
-            <Image src={post.avatar} circular size='mini' />
-            <p className={styles['feed-header-poster']}>
-              <span className={styles['feed-header-poster-name']}>
-                <strong>
-                  {post.isAd ? (
-                    <span style={{ color: '#01b5ac' }}>Advertisement</span>
-                  ) : (
-                    <Link
-                      to={`/user/${post.user}`}
-                      className={styles['user-details']}
-                    >
-                      {post.displayName}
-                    </Link>
-                  )}
-                </strong>
-              </span>
-            </p>
-          </div>
-
-          <div className={styles['feed-content-image']}>
-            <Link to={`/feed/${post._id}`}>
-              <Image src={post.image} fluid centered alt='Sample image' />
-            </Link>
-          </div>
-
-          <div className={styles['feed-details']}>
-            {post.isAd ? (
-              <>
-                <Icon
-                  link
-                  className={styles['feed-details-icon']}
-                  name='paper plane outline'
-                  size='large'
-                />
-              </>
-            ) : (
-              <>
-                <Icon
-                  link
-                  className={styles['each-feed-details-icon']}
-                  name={heartName}
-                  color={heartColour}
-                  onClick={heartFillHandler}
-                  size='large'
-                />
-
-                <Link to={`/feed/${post._id}/comments`}>
-                  <Icon
-                    link
-                    className={styles['feed-details-icon']}
-                    name='comment outline'
-                    size='large'
-                  />
-                </Link>
-
-                <Icon
-                  link
-                  className={styles['feed-details-icon']}
-                  name='paper plane outline'
-                  size='large'
-                />
-                <Icon
-                  link
-                  className={styles['each-feed-details-icon']}
-                  name={bookmarkName}
-                  color={bookmarkColour}
-                  onClick={bookMarkHandler}
-                  size='large'
-                  style={{ float: 'right' }}
-                />
-              </>
-            )}
-          </div>
-
-          <div className={styles['feed-content-text']}>
-            <p>
-              <span className={styles['feed-content-text-user']}>
+      <div
+        className='border-t border-b md:border my-4 md:mx-auto md:shadow-xl'
+        style={{ maxWidth: '600px' }}
+      >
+        <div className='flex items-center ml-2 my-1 md:my-3'>
+          <img
+            src={post.avatar}
+            className='rounded-full h-12'
+            alt={`${post.displayName}`}
+          />
+          <p className='ml-2'>
+            <span className='md:text-lg'>
+              <strong>
                 {post.isAd ? (
-                  <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
+                  <span style={{ color: '#01b5ac' }}>Advertisement</span>
                 ) : (
-                  <strong>{post.displayName}</strong>
+                  <Link to={`/user/${post.user}`} className=''>
+                    {post.displayName}
+                  </Link>
                 )}
-              </span>{' '}
-              {post.text && post.text.length > 200
-                ? post.text.substring(0, 200)
-                : post.text}
-            </p>
-          </div>
+              </strong>
+            </span>
+          </p>
+        </div>
 
-          <div className={styles['feed-footer']}>
-            <small className={styles['feed-footer-timestamp']}>
-              {post.isAd ? '' : displayTimestamp(Date.now(), post.createdAt)}
-            </small>
-          </div>
+        <div className=''>
+          <Link to={`/feed/${post._id}`}>
+            <Image src={post.image} fluid centered alt='Sample image' />
+          </Link>
+        </div>
+
+        <div className='my-2 px-2 md:px-4'>
+          {post.isAd ? (
+            <>
+              <Icon link className='' name='paper plane outline' size='large' />
+            </>
+          ) : (
+            <>
+              <Icon
+                link
+                className=''
+                name={heartName}
+                color={heartColour}
+                onClick={heartFillHandler}
+                size='large'
+              />
+
+              <Link to={`/feed/${post._id}/comments`}>
+                <Icon link className='' name='comment outline' size='large' />
+              </Link>
+
+              <Icon link className='' name='paper plane outline' size='large' />
+              <Icon
+                link
+                className=''
+                name={bookmarkName}
+                color={bookmarkColour}
+                onClick={bookMarkHandler}
+                size='large'
+                style={{ float: 'right' }}
+              />
+            </>
+          )}
+        </div>
+
+        <div className='px-2 md:px-4 md:mt-2 md:mb-4'>
+          <p>
+            <span className=''>
+              {post.isAd ? (
+                <Icon name='shopping bag' style={{ color: '#01b5ac' }} />
+              ) : (
+                <strong>{post.displayName}</strong>
+              )}
+            </span>{' '}
+            {post.text && post.text.length > 200
+              ? post.text.substring(0, 200)
+              : post.text}
+          </p>
+        </div>
+
+        <div className='px-2 mb-3 md:px-4'>
+          <small className='text-gray-500'>
+            {post.isAd ? '' : displayTimestamp(Date.now(), post.createdAt)}
+          </small>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Feed
+export default Feed;

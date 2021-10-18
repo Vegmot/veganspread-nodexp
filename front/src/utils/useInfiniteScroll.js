@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export const usePublicPostsInfiniteScroll = page => {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [posts, setPosts] = useState([])
-  const [hasMore, setHasMore] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     axios({
       method: 'GET',
@@ -18,28 +18,28 @@ export const usePublicPostsInfiniteScroll = page => {
     })
       .then(res => {
         setPosts(prevPosts => {
-          return [...prevPosts, ...res.data.posts.map(post => post)]
-        })
-        setHasMore(res.data.posts.length > 0)
-        setLoading(false)
+          return [...prevPosts, ...res.data.posts.map(post => post)];
+        });
+        setHasMore(res.data.posts.length > 0);
+        setLoading(false);
       })
       .catch(e => {
-        setError('There was an error')
-        setLoading(false)
-      })
-  }, [page])
-  return { loading, error, posts, hasMore }
-}
+        setError('There was an error');
+        setLoading(false);
+      });
+  }, [page]);
+  return { loading, error, posts, hasMore };
+};
 
 export const useCommentsInfiniteScroll = (pid, page) => {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [comments, setComments] = useState([])
-  const [hasMore, setHasMore] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     axios({
       method: 'GET',
@@ -48,15 +48,15 @@ export const useCommentsInfiniteScroll = (pid, page) => {
     })
       .then(res => {
         setComments(prevComments => {
-          return [...prevComments, ...res.data.comments.map(cmt => cmt)]
-        })
-        setHasMore(res.data.comments.length > 0)
-        setLoading(false)
+          return [...prevComments, ...res.data.comments.map(cmt => cmt)];
+        });
+        setHasMore(res.data.comments.length > 0);
+        setLoading(false);
       })
       .catch(e => {
-        setError('There was an error')
-        setLoading(false)
-      })
-  }, [pid, page])
-  return { loading, error, comments, hasMore }
-}
+        setError('There was an error');
+        setLoading(false);
+      });
+  }, [pid, page]);
+  return { loading, error, comments, hasMore };
+};

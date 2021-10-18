@@ -1,20 +1,18 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { Container, Image, Menu } from 'semantic-ui-react'
-import { useSelector } from 'react-redux'
-import SignedInMenu from '../navbar/SignedInMenu'
-import SignedOutMenu from '../navbar/SignedOutMenu'
-
-import './Navbar.css'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Menu } from 'semantic-ui-react';
+import { useSelector } from 'react-redux';
+import SignedInMenu from '../navbar/SignedInMenu';
+import SignedOutMenu from '../navbar/SignedOutMenu';
 
 const Navbar = () => {
-  const loginUser = useSelector(state => state.loginUser)
-  const { userData } = loginUser
+  const loginUser = useSelector(state => state.loginUser);
+  const { userData } = loginUser;
 
   return (
     <>
-      <Menu inverted fixed='top' id='header-navbar' className='header-navbar'>
-        <Container>
+      <section className='flex items-center justify-between bg-black text-gray-50 h-12 md:h-20 sticky top-0 z-50 md:w-screen mx-auto'>
+        <div className='ml-6 md:ml-20'>
           <Menu.Item
             as={NavLink}
             exact
@@ -22,40 +20,18 @@ const Navbar = () => {
             header
             style={{ background: 'transparent' }}
           >
-            <Image
-              src='/assets/fortunecookie.png'
-              alt='fortune cookie logo'
-              style={{ width: '25px' }}
-            />
+            <h1 className='text-2xl'>
+              <i className='home icon' />
+            </h1>
           </Menu.Item>
+        </div>
 
-          <Menu.Item
-            as={NavLink}
-            exact
-            to='/'
-            header
-            style={{ background: 'transparent' }}
-          >
-            Feed
-          </Menu.Item>
-
-          <Menu.Item
-            as={NavLink}
-            exact
-            to='/chat'
-            header
-            style={{ background: 'transparent' }}
-          >
-            Chat
-          </Menu.Item>
-
+        <div className='mr-6 md:mr-20'>
           {userData ? <SignedInMenu /> : <SignedOutMenu />}
-        </Container>
-      </Menu>
-
-      <div className='space-below-navbar'></div>
+        </div>
+      </section>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

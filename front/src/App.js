@@ -1,12 +1,12 @@
-import { Route, Switch } from 'react-router-dom'
-
-import NotFound from './components/layout/NotFound'
-import ModalManager from './components/modals/ModalManager'
-import Navbar from './components/layout/navbar/Navbar'
-import FeedsScreen from './screens/feeds/FeedsScreen'
-import EachFeedScreen from './screens/feeds/EachFeedScreen'
-import CommentsScreen from './screens/feeds/comments/CommentsScreen'
-import UserDetailsScreen from './screens/users/UserDetailScreen'
+import { Route, Switch } from 'react-router-dom';
+import NotFound from './components/layout/NotFound';
+import ModalManager from './components/modals/ModalManager';
+import Navbar from './components/layout/navbar/Navbar';
+import ScreenBottom from './components/layout/ScreenBottom';
+import FeedsScreen from './screens/feeds/FeedsScreen';
+import EachFeedScreen from './screens/feeds/EachFeedScreen';
+import CommentsScreen from './screens/feeds/comments/CommentsScreen';
+import UserDetailsScreen from './screens/users/UserDetailScreen';
 
 const App = () => {
   return (
@@ -20,8 +20,9 @@ const App = () => {
         <Route exact path='/' component={FeedsScreen} />
         <Route component={NotFound} />
       </Switch>
+      <ScreenBottom />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

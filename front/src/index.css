@@ -13,13 +13,3 @@ body {
   font-family: 'Lato', sans-serif;
   background-color: #f7f7f7;
 }
-
-@media (max-width: 500px) {
-}
-
-@media (min-width: 501px) {
-  body {
-    padding-left: 25%;
-    padding-right: 25%;
-  }
-}
